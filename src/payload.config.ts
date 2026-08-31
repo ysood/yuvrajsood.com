@@ -1,5 +1,6 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import path from "path";
 import { buildConfig } from "payload";
 import sharp from "sharp";
@@ -30,7 +31,22 @@ export default buildConfig({
     push: false,
   }),
   editor: lexicalEditor(),
+  plugins: [
+    vercelBlobStorage({
+      addRandomSuffix: true,
+      alwaysInsertFields: true,
+      clientUploads: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
+  ],
+  routes: {
+    admin: "/system",
+  },
   secret: process.env.PAYLOAD_SECRET || "",
+  serverURL: process.env.SERVER_URL,
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
