@@ -13,6 +13,17 @@ import { Users } from "./collections/Users";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  process.env.SERVER_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : undefined,
+  ...(process.env.ADMIN_ALLOWED_ORIGINS?.split(",") ?? []),
+].filter((origin): origin is string => Boolean(origin?.trim()));
+
 export default buildConfig({
   admin: {
     importMap: {
@@ -24,6 +35,7 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Products, Media],
+  csrf: [...new Set(allowedOrigins)],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || "",

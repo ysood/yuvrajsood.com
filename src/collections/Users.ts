@@ -5,6 +5,11 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: "email",
   },
-  auth: true,
+  auth: {
+    lockTime: 15 * 60 * 1000,
+    maxLoginAttempts: 5,
+    removeTokenFromResponses: true,
+    tokenExpiration: 12 * 60 * 60,
+  },
   fields: [],
 };

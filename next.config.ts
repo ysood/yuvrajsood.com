@@ -6,7 +6,29 @@ import { fileURLToPath } from "url";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+const serverActionOrigins = [
+  process.env.SERVER_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : undefined,
+  ...(process.env.ADMIN_ALLOWED_ORIGINS?.split(",") ?? []),
+]
+  .filter((origin): origin is string => Boolean(origin?.trim()))
+  .map((origin) => {
+    try {
+      return new URL(origin.trim()).host;
+    } catch {
+      return origin.trim();
+    }
+  });
+
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      allowedOrigins: [...new Set(serverActionOrigins)],
+    },
+  },
   turbopack: {
     root: path.resolve(dirname),
   },
