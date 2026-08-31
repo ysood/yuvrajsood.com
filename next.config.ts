@@ -1,14 +1,31 @@
 import type { NextConfig } from "next";
+import { withPayload } from "@payloadcms/next/withPayload";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 const nextConfig: NextConfig = {
-  output: "export",
   turbopack: {
-    root: process.cwd(),
+    root: path.resolve(dirname),
   },
   images: {
-    unoptimized: true,
+    localPatterns: [
+      {
+        pathname: "/api/media/file/**",
+      },
+    ],
   },
-  // No basePath/assetPrefix needed for custom domain
+  webpack: (webpackConfig) => {
+    webpackConfig.resolve.extensionAlias = {
+      ".cjs": [".cts", ".cjs"],
+      ".js": [".ts", ".tsx", ".js", ".jsx"],
+      ".mjs": [".mts", ".mjs"],
+    };
+
+    return webpackConfig;
+  },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig, { devBundleServerPackages: false });
