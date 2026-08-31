@@ -23,8 +23,10 @@ export const Media: CollectionConfig = {
   ],
   upload: {
     adminThumbnail: "small",
+    displayPreview: true,
     staticDir: path.resolve(process.cwd(), "media"),
-    mimeTypes: ["image/*"],
+    mimeTypes: ["image/png", "image/jpeg", "image/webp", "image/avif"],
+    pasteURL: false,
     imageSizes: [
       {
         name: "small",

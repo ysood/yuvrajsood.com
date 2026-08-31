@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import { Media } from "./collections/Media";
 import { Products } from "./collections/Products";
 import { Users } from "./collections/Users";
+import { SiteSettings } from "./globals/SiteSettings";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -43,6 +44,7 @@ export default buildConfig({
     push: false,
   }),
   editor: lexicalEditor(),
+  globals: [SiteSettings],
   plugins: [
     vercelBlobStorage({
       addRandomSuffix: true,
@@ -60,6 +62,11 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || "",
   serverURL: process.env.SERVER_URL,
   sharp,
+  upload: {
+    limits: {
+      fileSize: 10 * 1024 * 1024,
+    },
+  },
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
