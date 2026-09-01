@@ -1,3 +1,4 @@
+import { ChangePasswordForm } from "@/components/admin/change-password-form";
 import { ProfileImageSettings } from "@/components/admin/profile-image-settings";
 import { getAdminSession } from "@/lib/admin-auth";
 import { toAdminMediaItem } from "@/lib/admin-media";
@@ -43,6 +44,9 @@ export default async function SettingsPage() {
           initialMedia={mediaItems}
           initialSelection={selectedID}
         />
+        <div className="mt-10">
+          <ChangePasswordForm />
+        </div>
       </div>
     </div>
   );
