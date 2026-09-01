@@ -1,11 +1,11 @@
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+import { ProductImage } from "@/components/product-image";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -105,10 +105,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <Card className="relative flex h-[360px] items-center justify-center overflow-hidden rounded-3xl border-0 p-4 shadow-none sm:h-[560px] sm:p-10 lg:h-[720px]">
           {image?.url ? (
-            <Image
+            <ProductImage
               alt={image.alt}
               className="object-contain p-8 sm:p-16"
-              fill
               priority
               sizes="(max-width: 639px) 90vw, 94vw"
               src={image.url}

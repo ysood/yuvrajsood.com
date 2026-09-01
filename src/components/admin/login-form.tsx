@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 
 import { loginAction, type LoginState } from "@/app/(frontend)/admin/actions";
-import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/admin/password-input";
 import { Label } from "@/components/ui/label";
 
 const initialState: LoginState = {};
@@ -17,7 +17,7 @@ export function LoginForm() {
         <Label className="text-xs font-normal text-muted-foreground" htmlFor="password">
           Enter password
         </Label>
-        <Input
+        <PasswordInput
           aria-describedby="login-message"
           autoComplete="current-password"
           autoFocus
@@ -27,7 +27,6 @@ export function LoginForm() {
           maxLength={100}
           name="password"
           required
-          type="password"
         />
       </div>
 

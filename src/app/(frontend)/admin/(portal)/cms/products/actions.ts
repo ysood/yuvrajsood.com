@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { requireAdminUser } from "@/lib/admin-auth";
+import { deleteMediaIfUnreferenced, toMediaID } from "@/lib/admin-media";
 import { getPayloadClient } from "@/lib/payload";
 import type { Product } from "@/payload-types";
 
@@ -41,12 +42,13 @@ export async function saveProductAction(input: ProductInput): Promise<ProductAct
 
   const user = await requireAdminUser();
   const payload = await getPayloadClient();
-  let previousSlug: string | null = null;
+  let previous: { imageID: null | number; name: string; slug: string } | null = null;
+  let product: Product;
 
   try {
     if (parsed.data.id) {
-      const existing = await payload.findByID({ collection: "products", id: parsed.data.id, overrideAccess: false, user });
-      previousSlug = existing.slug;
+      const existing = await payload.findByID({ collection: "products", depth: 0, id: parsed.data.id, overrideAccess: false, user });
+      previous = { imageID: toMediaID(existing.image), name: existing.name, slug: existing.slug };
     }
 
     const data = {
@@ -61,31 +63,52 @@ export async function saveProductAction(input: ProductInput): Promise<ProductAct
       staffPick: parsed.data.staffPick,
       type: parsed.data.type,
     };
-    const product = parsed.data.id
-      ? await payload.update({ collection: "products", data, id: parsed.data.id, overrideAccess: false, user })
-      : await payload.create({ collection: "products", data, overrideAccess: false, user });
-
-    console.info(JSON.stringify({ event: parsed.data.id ? "admin.product.updated" : "admin.product.created", productID: product.id }));
-    revalidatePath("/admin/cms/products");
-    revalidatePath("/products");
-    revalidatePath(`/products/${product.slug}`);
-    if (previousSlug && previousSlug !== product.slug) revalidatePath(`/products/${previousSlug}`);
-    return { product: { id: product.id, slug: product.slug }, success: "Product saved." };
+    product = parsed.data.id
+      ? await payload.update({ collection: "products", data, depth: 0, id: parsed.data.id, overrideAccess: false, user })
+      : await payload.create({ collection: "products", data, depth: 0, overrideAccess: false, user });
   } catch {
     return { error: "The product could not be saved. Check that the slug is unique and try again." };
   }
+
+  try {
+    if (parsed.data.imageID && previous?.name !== product.name) {
+      await payload.update({ collection: "media", data: { alt: product.name }, id: parsed.data.imageID, overrideAccess: false, user });
+    }
+    if (previous && previous.imageID !== parsed.data.imageID) {
+      await deleteMediaIfUnreferenced(payload, user, previous.imageID);
+    }
+  } catch {
+    console.error(JSON.stringify({ event: "admin.product.image-cleanup-failed", productID: product.id }));
+  }
+
+  console.info(JSON.stringify({ event: parsed.data.id ? "admin.product.updated" : "admin.product.created", productID: product.id }));
+  revalidatePath("/admin/cms", "layout");
+  revalidatePath("/products");
+  revalidatePath(`/products/${product.slug}`);
+  if (previous && previous.slug !== product.slug) revalidatePath(`/products/${previous.slug}`);
+
+  return { product: { id: product.id, slug: product.slug }, success: "Product saved." };
 }
 
 export async function deleteProductAction(id: number): Promise<ProductActionResult> {
   const parsedID = z.number().int().positive().safeParse(id);
   if (!parsedID.success) return { error: "Invalid product." };
+
   const user = await requireAdminUser();
   const payload = await getPayloadClient();
-  const existing = await payload.findByID({ collection: "products", id: parsedID.data, overrideAccess: false, user });
+  const existing = await payload.findByID({ collection: "products", depth: 0, id: parsedID.data, overrideAccess: false, user });
   await payload.delete({ collection: "products", id: parsedID.data, overrideAccess: false, user });
+
+  try {
+    await deleteMediaIfUnreferenced(payload, user, toMediaID(existing.image));
+  } catch {
+    console.error(JSON.stringify({ event: "admin.product.image-cleanup-failed", productID: parsedID.data }));
+  }
+
   console.info(JSON.stringify({ event: "admin.product.deleted", productID: parsedID.data }));
-  revalidatePath("/admin/cms/products");
+  revalidatePath("/admin/cms", "layout");
   revalidatePath("/products");
   revalidatePath(`/products/${existing.slug}`);
+
   return { success: "Product deleted." };
 }

@@ -1,3 +1,4 @@
+import { toAdminMediaItem, type AdminMediaItem } from "@/lib/admin-media";
 import type { Product } from "@/payload-types";
 
 export type AdminProduct = {
@@ -5,7 +6,7 @@ export type AdminProduct = {
   category: string;
   description: Product["description"];
   id: number;
-  imageID: number | null;
+  image: AdminMediaItem | null;
   name: string;
   price: number;
   purchaseLink: string;
@@ -21,7 +22,7 @@ export function toAdminProduct(product: Product): AdminProduct {
     category: product.category,
     description: product.description,
     id: product.id,
-    imageID: product.image && typeof product.image === "object" ? product.image.id : product.image || null,
+    image: product.image && typeof product.image === "object" ? toAdminMediaItem(product.image) : null,
     name: product.name,
     price: product.price,
     purchaseLink: product.purchaseLink,

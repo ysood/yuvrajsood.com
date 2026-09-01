@@ -17,7 +17,7 @@ const contentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https://*.blob.vercel-storage.com",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.blob.vercel-storage.com",
+  "connect-src 'self' https://vercel.com https://*.blob.vercel-storage.com",
   "worker-src 'self' blob:",
   isProduction ? "upgrade-insecure-requests" : "",
 ].filter(Boolean).join("; ");

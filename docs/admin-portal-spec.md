@@ -13,7 +13,7 @@ Create a private, responsive administration portal for maintaining site content 
 Version 1 has two sections:
 
 - **Settings**, initially for changing the profile image used in the admin shell.
-- **CMS**, for managing products, subscriptions, and their media.
+- **CMS**, for managing products and subscriptions, including each record's image.
 
 The architecture must leave room for more settings, permissions, and collection types without adding those abstractions before they are needed.
 
@@ -54,12 +54,11 @@ The architecture must leave room for more settings, permissions, and collection 
 /admin/cms
 /admin/cms/products/new
 /admin/cms/products/[id]
-/admin/cms/media
 /admin/settings
 /system                   -> generated Payload admin fallback
 ```
 
-The initial CMS navigation exposes Products and Media. The `users` collection stays out of the normal CMS interface.
+The CMS landing screen lists the active collections. Version 1 has one, Products. The `users` and `media` collections stay out of the CMS interface: media is never browsed on its own, because every image belongs to exactly one owner record.
 
 ## Admin shell
 
@@ -115,11 +114,9 @@ Add a Payload global named `site-settings` with a `profileImage` upload relation
 The Settings screen contains:
 
 - Current circular image preview.
-- `Choose image` or drag-and-drop upload action.
-- Media-library picker for reusing an existing asset.
-- Preview before saving.
-- `Replace`, `Remove`, `Save`, and `Cancel` actions as appropriate.
-- File-type, file-size, and missing-alt-text validation.
+- `Choose image` or drag-and-drop upload action. Choosing a file uploads and saves it in one step, with no intermediate confirmation.
+- `Replace` and `Remove`, which save immediately and delete the superseded asset.
+- File-type and file-size validation. Alt text is set automatically.
 
 Saving updates the sidebar avatar immediately. The same global becomes the source of truth for the public header avatar when that integration is approved; changing the public homepage or header is not part of this portal's first implementation.
 
@@ -133,10 +130,7 @@ Before enabling uploads in production, configure the Payload Vercel Blob storage
 
 ### Landing view
 
-The CMS landing screen presents the available content types as a quiet list or small cards:
-
-- Products
-- Media
+The CMS landing screen presents the active collections as an accordion. Expanding one shows its slug, item count, and fields, plus a `Manage items` action that opens the collection's list view.
 
 The Products view includes:
 
@@ -160,7 +154,7 @@ Products and subscriptions remain records in the existing `products` collection.
 | Category | Input | Optional free text in version 1 |
 | Price | Number input | Optional, non-negative, stored in major currency units under the current schema |
 | Purchase Link | URL input | Optional, validated URL |
-| Image | Media picker/upload | Optional, one media relationship |
+| Image | Inline upload | Optional, one media relationship owned solely by this record |
 | About/Description | Payload rich-text editor | Optional |
 | Staff Pick | Switch | Defaults to false |
 
@@ -175,15 +169,14 @@ Editor actions:
 
 Autosave, scheduled publishing, revisions, and bulk editing are out of scope for version 1.
 
-### Media manager
+### Image ownership
 
-The Media view provides:
+There is no media library. Every image belongs to exactly one owner: a product, or the `site-settings` profile image. Images are uploaded from the owner's own editor and are never browsed or reused across records.
 
-- Responsive image grid with file name, alt text, dimensions, and file size.
-- Upload with progress, preview, validation, and retry.
-- Edit alt text and replace an asset.
-- Usage information when an asset is referenced by products or site settings.
-- Protected deletion. A referenced asset must either be blocked from deletion or require a confirmation that clearly lists the affected content.
+- Uploading replaces the owner's current image and deletes the superseded asset once the change is saved.
+- Deleting a product deletes its image.
+- Alt text is derived from the owner, the product name or `Profile image`, and is kept in sync when the product is renamed.
+- Deletion always re-checks references first, so an asset that is still pointed at by any record is left in place.
 
 Accepted formats should initially be PNG, JPEG, WebP, and AVIF. SVG upload remains disabled unless a sanitization policy is added.
 
@@ -262,7 +255,7 @@ Secrets must be configured separately for local, preview, and production environ
 1. **Storage and routing:** configure Vercel Blob, move generated Payload admin to `/system`, and verify migrations and imports.
 2. **Authentication shell:** implement password-only login, session checks, rate limiting, logout, responsive sidebar/topbar, and theme behavior.
 3. **Settings:** add the `site-settings` global and profile-image workflow.
-4. **CMS:** implement product/subscription and media list, create, edit, and delete workflows.
+4. **CMS:** implement product/subscription list, create, edit, and delete workflows, including inline image upload.
 5. **Hardening:** add accessibility checks, destructive-action safeguards, structured audit logging, error states, and responsive browser tests.
 6. **Future schema builder:** design and implement the branch, preview, review, migration, and deploy workflow as a separate project.
 
@@ -296,8 +289,8 @@ Each phase should be a small cohesive commit and must pass lint, type checking, 
 
 - The administrator can list, search, create, edit, preview, and delete products and subscriptions.
 - Required and format validations match the Payload schema.
-- The administrator can upload and maintain media, including alt text.
-- Referenced media cannot be removed accidentally.
+- Uploading a replacement image removes the superseded asset, and deleting a product removes its image.
+- An asset that is still referenced by any record is never deleted.
 - Successful mutations revalidate the relevant public pages and return useful feedback.
 
 ### Verification matrix

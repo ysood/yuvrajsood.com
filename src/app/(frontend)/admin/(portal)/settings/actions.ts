@@ -4,11 +4,13 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { requireAdminUser } from "@/lib/admin-auth";
+import { deleteMediaIfUnreferenced, toMediaID } from "@/lib/admin-media";
 import { getPayloadClient } from "@/lib/payload";
 
 const mediaIDSchema = z.number().int().positive().nullable();
 
 export type PasswordState = { error?: string; success?: string };
+export type ProfileImageState = { error?: string; success?: string };
 
 const newPasswordSchema = z
   .object({
@@ -52,34 +54,29 @@ export async function changePasswordAction(
   return { success: "Password changed." };
 }
 
-export async function saveProfileImageAction(input: number | null) {
+export async function saveProfileImageAction(input: null | number): Promise<ProfileImageState> {
   const mediaID = mediaIDSchema.safeParse(input);
   if (!mediaID.success) return { error: "Choose a valid image." };
 
   const user = await requireAdminUser();
   const payload = await getPayloadClient();
+  const current = await payload.findGlobal({ depth: 0, overrideAccess: false, slug: "site-settings", user });
+  const previousID = toMediaID(current.profileImage);
 
-  if (mediaID.data !== null) {
-    const media = await payload.findByID({
-      collection: "media",
-      id: mediaID.data,
-      overrideAccess: false,
-      user,
-    });
-
-    if (!media.alt.trim()) return { error: "Add alt text before using this image." };
+  try {
+    await payload.updateGlobal({ data: { profileImage: mediaID.data }, overrideAccess: false, slug: "site-settings", user });
+  } catch {
+    return { error: "The profile image could not be saved. Try again." };
   }
 
-  await payload.updateGlobal({
-    data: { profileImage: mediaID.data },
-    overrideAccess: false,
-    slug: "site-settings",
-    user,
-  });
+  try {
+    if (previousID !== mediaID.data) await deleteMediaIfUnreferenced(payload, user, previousID);
+  } catch {
+    console.error(JSON.stringify({ event: "admin.profile-image.cleanup-failed" }));
+  }
 
   console.info(JSON.stringify({ event: "admin.profile-image.updated" }));
   revalidatePath("/admin", "layout");
-  revalidatePath("/admin/settings");
 
-  return { success: "Profile image saved." };
+  return { success: mediaID.data ? "Profile image updated." : "Profile image removed." };
 }

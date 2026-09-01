@@ -52,7 +52,7 @@ export default buildConfig({
   globals: [SiteSettings],
   plugins: [
     vercelBlobStorage({
-      addRandomSuffix: true,
+      addRandomSuffix: false,
       alwaysInsertFields: true,
       clientUploads: {
         access: ({ collectionSlug, req }) =>

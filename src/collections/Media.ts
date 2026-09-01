@@ -22,33 +22,9 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    adminThumbnail: "small",
     displayPreview: true,
     staticDir: path.resolve(process.cwd(), "media"),
     mimeTypes: ["image/png", "image/jpeg", "image/webp", "image/avif"],
     pasteURL: false,
-    imageSizes: [
-      {
-        name: "small",
-        width: 480,
-        height: 480,
-        fit: "contain",
-        withoutEnlargement: true,
-      },
-      {
-        name: "medium",
-        width: 960,
-        height: 960,
-        fit: "contain",
-        withoutEnlargement: true,
-      },
-      {
-        name: "large",
-        width: 1600,
-        height: 1600,
-        fit: "contain",
-        withoutEnlargement: true,
-      },
-    ],
   },
 };

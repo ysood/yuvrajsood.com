@@ -2,12 +2,13 @@
 
 import type { SerializedEditorState } from "lexical";
 import { ArrowLeft, ArrowUpRight, LoaderCircle, Trash2 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
 import { deleteProductAction, saveProductAction, type ProductActionResult } from "@/app/(frontend)/admin/(portal)/cms/products/actions";
+import { discardUploadedImageAction } from "@/app/(frontend)/admin/media-actions";
+import { ImageField } from "@/components/admin/image-field";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -22,13 +23,15 @@ const slugify = (value: string) => value.normalize("NFKD").toLowerCase().trim().
 
 type Draft = Omit<AdminProduct, "updatedAt">;
 
-export function ProductEditor({ media, product }: { media: AdminMediaItem[]; product: AdminProduct | null }) {
+export function ProductEditor({ blobUploadsEnabled, product }: { blobUploadsEnabled: boolean; product: AdminProduct | null }) {
   const router = useRouter();
   const [draft, setDraft] = useState<Draft>(() => product ? { ...product } : {
-    brand: "", category: "", description: emptyDescription, id: 0, imageID: null, name: "", price: 0, purchaseLink: "", slug: "", staffPick: false, type: "product",
+    brand: "", category: "", description: emptyDescription, id: 0, image: null, name: "", price: 0, purchaseLink: "", slug: "", staffPick: false, type: "product",
   });
   const [savedDraft, setSavedDraft] = useState(() => JSON.stringify(draft));
   const [slugEdited, setSlugEdited] = useState(Boolean(product));
+  const [pendingUploadID, setPendingUploadID] = useState<number | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [result, setResult] = useState<ProductActionResult>({});
   const [pending, startTransition] = useTransition();
   const dirty = JSON.stringify(draft) !== savedDraft;
@@ -58,26 +61,45 @@ export function ProductEditor({ media, product }: { media: AdminMediaItem[]; pro
     setResult({});
   }
 
+  function changeImage(image: AdminMediaItem | null) {
+    const orphanID = pendingUploadID && pendingUploadID !== image?.id ? pendingUploadID : null;
+    setPendingUploadID(image && image.id !== product?.image?.id ? image.id : null);
+    setField("image", image);
+    if (orphanID) void discardUploadedImageAction(orphanID);
+  }
+
   function save() {
     startTransition(async () => {
-      const response = await saveProductAction({ ...draft, id: draft.id || null });
+      const response = await saveProductAction({ ...draft, id: draft.id || null, imageID: draft.image?.id ?? null });
       setResult(response);
       if (response.product) {
         const next = { ...draft, id: response.product.id, slug: response.product.slug };
         setDraft(next);
         setSavedDraft(JSON.stringify(next));
-        if (!product) router.replace(`/admin/cms/products/${response.product.id}`);
+        setPendingUploadID(null);
+        router.push("/admin/cms/products");
         router.refresh();
       }
     });
   }
 
+  function cancel() {
+    if (dirty && !window.confirm("Discard unsaved changes?")) return;
+    startTransition(async () => {
+      if (pendingUploadID) await discardUploadedImageAction(pendingUploadID);
+      router.push("/admin/cms/products");
+    });
+  }
+
   function remove() {
     if (!draft.id) return;
+    setDeleting(true);
     startTransition(async () => {
       const response = await deleteProductAction(draft.id);
-      if (response.error) setResult(response);
-      else router.replace("/admin/cms/products");
+      if (response.error) {
+        setResult(response);
+        setDeleting(false);
+      } else router.replace("/admin/cms/products");
     });
   }
 
@@ -122,11 +144,8 @@ export function ProductEditor({ media, product }: { media: AdminMediaItem[]; pro
         </div>
 
         <div className="space-y-3">
-          <div className="flex items-center justify-between gap-4"><Label>Image</Label><Button asChild size="sm" variant="ghost"><Link href="/admin/cms/media">Manage media</Link></Button></div>
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
-            <button aria-pressed={draft.imageID === null} className={`aspect-square rounded-xl border-2 text-xs text-muted-foreground ${draft.imageID === null ? "border-foreground" : "border-transparent bg-muted"}`} onClick={() => setField("imageID", null)} type="button">No image</button>
-            {media.map((item) => <button aria-label={`Use ${item.alt}`} aria-pressed={draft.imageID === item.id} className={`relative aspect-square overflow-hidden rounded-xl border-2 bg-muted ${draft.imageID === item.id ? "border-foreground" : "border-transparent"}`} key={item.id} onClick={() => setField("imageID", item.id)} type="button"><Image alt={item.alt} className="object-contain" fill sizes="144px" src={item.thumbnailURL} /></button>)}
-          </div>
+          <Label>Image</Label>
+          <ImageField alt={draft.name} blobUploadsEnabled={blobUploadsEnabled} busy={pending} image={draft.image} onChange={changeImage} />
         </div>
 
         <div className="space-y-2"><Label>About / description</Label><RichTextEditor onChange={(value) => setField("description", value as Draft["description"])} value={draft.description as SerializedEditorState} />{fieldError("description") ? <p className="text-sm text-destructive">{fieldError("description")}</p> : null}</div>
@@ -136,8 +155,8 @@ export function ProductEditor({ media, product }: { media: AdminMediaItem[]; pro
         <details className="rounded-xl border p-4"><summary className="cursor-pointer text-sm font-medium">Advanced</summary><div className="mt-4 space-y-2"><Label htmlFor="slug">Slug</Label><Input id="slug" maxLength={160} onChange={(event) => { setSlugEdited(true); setField("slug", slugify(event.target.value)); }} required value={draft.slug} />{fieldError("slug") ? <p className="text-sm text-destructive">{fieldError("slug")}</p> : null}</div></details>
 
         <div className="sticky bottom-0 flex items-center justify-between gap-4 border-t bg-background/90 py-4 backdrop-blur-md">
-          <div>{product ? <AlertDialog><AlertDialogTrigger asChild><Button disabled={pending} type="button" variant="ghost"><Trash2 />Delete</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Delete {draft.name}?</AlertDialogTitle><AlertDialogDescription>This permanently removes the item from the public catalogue.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={remove}>Delete item</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog> : null}</div>
-          <div className="flex items-center gap-2"><span aria-live="polite" className="text-sm text-muted-foreground">{result.success}</span><Button asChild disabled={pending} type="button" variant="ghost"><Link href="/admin/cms/products">Cancel</Link></Button><Button disabled={!dirty || pending} type="submit">{pending ? <LoaderCircle className="animate-spin" /> : null}{pending ? "Saving…" : "Save"}</Button></div>
+          <div>{product ? <AlertDialog><AlertDialogTrigger asChild><Button disabled={pending} type="button" variant="ghost">{deleting ? <LoaderCircle className="animate-spin" /> : <Trash2 />}{deleting ? "Deleting…" : "Delete"}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Delete {draft.name}?</AlertDialogTitle><AlertDialogDescription>This permanently removes the item and its image from the public catalogue.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={remove}>Delete item</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog> : null}</div>
+          <div className="flex items-center gap-2"><span aria-live="polite" className="text-sm text-muted-foreground">{result.success}</span><Button disabled={pending} onClick={cancel} type="button" variant="ghost">Cancel</Button><Button disabled={!dirty || pending} type="submit">{pending && !deleting ? <LoaderCircle className="animate-spin" /> : null}{pending && !deleting ? "Saving…" : "Save"}</Button></div>
         </div>
       </form>
     </div>

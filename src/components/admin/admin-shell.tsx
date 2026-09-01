@@ -20,7 +20,7 @@ export function AdminShell({
     <details className="group relative">
       <summary className="relative flex size-10 cursor-pointer list-none items-center justify-center overflow-hidden rounded-full border bg-card text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
         {profileImage ? (
-          <Image alt={profileImage.alt} className="rounded-full object-cover" fill sizes="40px" src={profileImage.thumbnailURL} />
+          <Image alt={profileImage.alt} className="rounded-full object-cover" fill sizes="40px" src={profileImage.url} />
         ) : (
           <UserRound aria-hidden="true" size={18} />
         )}
@@ -48,7 +48,7 @@ export function AdminShell({
         </div>
       </header>
 
-      <aside className="hidden h-screen grid-rows-[auto_1fr_auto] border-r p-5 md:grid">
+      <aside className="hidden h-screen grid-rows-[auto_1fr_auto] p-5 md:grid">
         {account}
         <div className="self-center">
           <AdminNav />
