@@ -11,7 +11,7 @@ export default async function ProtectedAdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const user = await getAdminSession();
-  if (!user) redirect("/admin/login");
+  if (!user) redirect("/admin");
 
   const payload = await getPayloadClient();
   const settings = await payload.findGlobal({

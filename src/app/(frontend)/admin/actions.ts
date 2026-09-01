@@ -10,6 +10,7 @@ import {
   getLoginRateLimit,
   recordFailedLogin,
 } from "@/lib/admin-rate-limit";
+import { ensureAdminCredential } from "@/lib/admin-auth";
 
 export type LoginState = {
   message?: string;
@@ -53,6 +54,7 @@ export async function loginAction(
   }
 
   try {
+    await ensureAdminCredential();
     await login({
       collection: "users",
       config,
@@ -78,5 +80,5 @@ export async function loginAction(
 export async function logoutAction() {
   await logout({ config });
   console.info(JSON.stringify({ event: "admin.logout.succeeded" }));
-  redirect("/admin/login");
+  redirect("/admin");
 }
