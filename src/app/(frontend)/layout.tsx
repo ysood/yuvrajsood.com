@@ -21,6 +21,22 @@ export const metadata: Metadata = {
     template: "%s · Yuvraj Sood",
   },
   description: "Products, tools, and objects used and recommended by Yuvraj Sood.",
+  icons: {
+    icon: [
+      {
+        url: "/favicon-black.png",
+        media: "(prefers-color-scheme: light)",
+        type: "image/png",
+        sizes: "32x32",
+      },
+      {
+        url: "/favicon-white.png",
+        media: "(prefers-color-scheme: dark)",
+        type: "image/png",
+        sizes: "32x32",
+      },
+    ],
+  },
 };
 
 export default function FrontendLayout({
