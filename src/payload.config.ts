@@ -30,7 +30,9 @@ const allowedOrigins = [
 
 export default buildConfig({
   admin: {
+    disable: true,
     importMap: {
+      autoGenerate: false,
       baseDir: path.resolve(dirname),
     },
     meta: {
