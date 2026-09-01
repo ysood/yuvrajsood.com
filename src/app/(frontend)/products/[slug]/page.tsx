@@ -1,11 +1,12 @@
 import { RichText } from "@payloadcms/richtext-lexical/react";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import { ProductImage } from "@/components/product-image";
+import { PurchaseButton } from "@/components/purchase-button";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -90,16 +91,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {formatPrice(product.price)}
             </p>
             <span className="h-6 w-px bg-border" />
-            <Button asChild className="h-11 rounded-full px-5">
-              <a
-                href={product.purchaseLink}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Purchase link
-                <ArrowUpRight aria-hidden="true" size={16} />
-              </a>
-            </Button>
+            <PurchaseButton
+              className="h-11 rounded-full px-5"
+              href={product.purchaseLink || null}
+              label="Purchase link"
+            />
           </div>
         </div>
 
@@ -127,16 +123,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </div>
 
       <div className="fixed inset-x-0 bottom-0 z-20 bg-background/90 p-4 backdrop-blur-md lg:hidden">
-        <Button asChild className="h-12 w-full rounded-full px-5">
-          <a
-            href={product.purchaseLink}
-            rel="noreferrer"
-            target="_blank"
-          >
-            Purchase for {formatPrice(product.price)}
-            <ArrowUpRight aria-hidden="true" size={16} />
-          </a>
-        </Button>
+        <PurchaseButton
+          className="h-12 w-full rounded-full px-5"
+          href={product.purchaseLink || null}
+          label={`Purchase for ${formatPrice(product.price)}`}
+        />
       </div>
     </main>
   );

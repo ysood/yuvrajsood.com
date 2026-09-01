@@ -25,7 +25,7 @@ export function toAdminProduct(product: Product): AdminProduct {
     image: product.image && typeof product.image === "object" ? toAdminMediaItem(product.image) : null,
     name: product.name,
     price: product.price,
-    purchaseLink: product.purchaseLink,
+    purchaseLink: product.purchaseLink || "",
     slug: product.slug,
     staffPick: Boolean(product.staffPick),
     type: product.type,

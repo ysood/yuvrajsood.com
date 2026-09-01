@@ -160,7 +160,7 @@ export interface Product {
   brand: string;
   category: string;
   price: number;
-  purchaseLink: string;
+  purchaseLink?: string | null;
   image?: (number | null) | Media;
   description: {
     root: {

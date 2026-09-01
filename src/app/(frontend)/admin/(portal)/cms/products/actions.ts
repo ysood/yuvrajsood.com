@@ -19,8 +19,15 @@ const productSchema = z.object({
   id: z.number().int().positive().nullable(),
   imageID: z.number().int().positive().nullable(),
   name: z.string().trim().min(1, "Name is required.").max(160),
-  price: z.number().finite().min(0, "Price cannot be negative.").max(1_000_000),
-  purchaseLink: z.url("Enter a valid purchase URL.").refine((value) => ["http:", "https:"].includes(new URL(value).protocol), "Use an http or https URL."),
+  price: z.number("Price is required.").finite().min(0, "Price cannot be negative.").max(1_000_000),
+  purchaseLink: z.string().trim().max(2048).refine((value) => {
+    if (!value) return true;
+    try {
+      return ["http:", "https:"].includes(new URL(value).protocol);
+    } catch {
+      return false;
+    }
+  }, "Enter a valid http or https URL, or leave it empty."),
   slug: z.string().trim().min(1, "Slug is required.").max(160).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers, and hyphens."),
   staffPick: z.boolean(),
   type: z.enum(["product", "subscription"]),
@@ -58,7 +65,7 @@ export async function saveProductAction(input: ProductInput): Promise<ProductAct
       image: parsed.data.imageID,
       name: parsed.data.name,
       price: parsed.data.price,
-      purchaseLink: parsed.data.purchaseLink,
+      purchaseLink: parsed.data.purchaseLink || null,
       slug: parsed.data.slug,
       staffPick: parsed.data.staffPick,
       type: parsed.data.type,

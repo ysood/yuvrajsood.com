@@ -21,12 +21,12 @@ import { emptyDescription, type AdminProduct } from "@/lib/admin-products";
 
 const slugify = (value: string) => value.normalize("NFKD").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-type Draft = Omit<AdminProduct, "updatedAt">;
+type Draft = Omit<AdminProduct, "price" | "updatedAt"> & { price: string };
 
 export function ProductEditor({ blobUploadsEnabled, product }: { blobUploadsEnabled: boolean; product: AdminProduct | null }) {
   const router = useRouter();
-  const [draft, setDraft] = useState<Draft>(() => product ? { ...product } : {
-    brand: "", category: "", description: emptyDescription, id: 0, image: null, name: "", price: 0, purchaseLink: "", slug: "", staffPick: false, type: "product",
+  const [draft, setDraft] = useState<Draft>(() => product ? { ...product, price: String(product.price) } : {
+    brand: "", category: "", description: emptyDescription, id: 0, image: null, name: "", price: "", purchaseLink: "", slug: "", staffPick: false, type: "product",
   });
   const [savedDraft, setSavedDraft] = useState(() => JSON.stringify(draft));
   const [slugEdited, setSlugEdited] = useState(Boolean(product));
@@ -70,7 +70,7 @@ export function ProductEditor({ blobUploadsEnabled, product }: { blobUploadsEnab
 
   function save() {
     startTransition(async () => {
-      const response = await saveProductAction({ ...draft, id: draft.id || null, imageID: draft.image?.id ?? null });
+      const response = await saveProductAction({ ...draft, id: draft.id || null, imageID: draft.image?.id ?? null, price: draft.price.trim() === "" ? Number.NaN : Number(draft.price) });
       setResult(response);
       if (response.product) {
         const next = { ...draft, id: response.product.id, slug: response.product.slug };
@@ -135,12 +135,12 @@ export function ProductEditor({ blobUploadsEnabled, product }: { blobUploadsEnab
           </div>
           <div className="space-y-2">
             <Label htmlFor="price">Price</Label>
-            <Input aria-invalid={Boolean(fieldError("price"))} id="price" min="0" onChange={(event) => setField("price", Number(event.target.value))} required step="0.01" type="number" value={draft.price} />
+            <Input aria-invalid={Boolean(fieldError("price"))} id="price" min="0" onChange={(event) => setField("price", event.target.value)} placeholder="0.00" step="0.01" type="number" value={draft.price} />
             {fieldError("price") ? <p className="text-sm text-destructive">{fieldError("price")}</p> : null}
           </div>
           <div className="space-y-2"><Label htmlFor="brand">Brand</Label><Input id="brand" maxLength={120} onChange={(event) => setField("brand", event.target.value)} required value={draft.brand} />{fieldError("brand") ? <p className="text-sm text-destructive">{fieldError("brand")}</p> : null}</div>
           <div className="space-y-2"><Label htmlFor="category">Category</Label><Input id="category" maxLength={120} onChange={(event) => setField("category", event.target.value)} required value={draft.category} />{fieldError("category") ? <p className="text-sm text-destructive">{fieldError("category")}</p> : null}</div>
-          <div className="space-y-2 sm:col-span-2"><Label htmlFor="purchaseLink">Purchase link</Label><Input id="purchaseLink" maxLength={2048} onChange={(event) => setField("purchaseLink", event.target.value)} required type="url" value={draft.purchaseLink} />{fieldError("purchaseLink") ? <p className="text-sm text-destructive">{fieldError("purchaseLink")}</p> : null}</div>
+          <div className="space-y-2 sm:col-span-2"><Label htmlFor="purchaseLink">Purchase link <span className="text-muted-foreground">(optional)</span></Label><Input id="purchaseLink" maxLength={2048} onChange={(event) => setField("purchaseLink", event.target.value)} placeholder="Leave empty if there is nowhere to buy it" type="url" value={draft.purchaseLink} />{fieldError("purchaseLink") ? <p className="text-sm text-destructive">{fieldError("purchaseLink")}</p> : null}</div>
         </div>
 
         <div className="space-y-3">

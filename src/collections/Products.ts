@@ -102,7 +102,6 @@ export const Products: CollectionConfig = {
       name: "purchaseLink",
       type: "text",
       label: "Purchase link",
-      required: true,
       validate: validatePurchaseLink,
     },
     {
