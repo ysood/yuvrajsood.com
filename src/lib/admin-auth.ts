@@ -1,15 +1,12 @@
 import { cache } from "react";
 import { headers } from "next/headers";
 
+import { configuredAdminEmail } from "@/access/authenticated";
 import { getPayloadClient } from "@/lib/payload";
 import type { User } from "@/payload-types";
 
-const configuredAdminEmail = () =>
-  process.env.ADMIN_EMAIL?.trim().toLowerCase() ?? "";
-
 export async function ensureAdminCredential() {
   const email = configuredAdminEmail();
-  if (!email) return null;
 
   const payload = await getPayloadClient();
   const existingAdmin = await payload.find({
@@ -47,7 +44,6 @@ export async function ensureAdminCredential() {
 
 export const getAdminSession = cache(async (): Promise<User | null> => {
   const adminEmail = configuredAdminEmail();
-  if (!adminEmail) return null;
 
   const payload = await getPayloadClient();
   const { user } = await payload.auth({ headers: await headers() });

@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 
 import { LoginForm } from "@/components/admin/login-form";
-import { getAdminSession } from "@/lib/admin-auth";
+import { ensureAdminCredential, getAdminSession } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
+  await ensureAdminCredential();
   if (await getAdminSession()) redirect("/admin/cms");
 
   return (

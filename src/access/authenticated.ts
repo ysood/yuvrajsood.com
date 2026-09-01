@@ -1,10 +1,12 @@
 import type { Access } from "payload";
 
+export const configuredAdminEmail = () =>
+  process.env.ADMIN_EMAIL?.trim().toLowerCase() || "admin@yuvrajsood.com";
+
 export const isConfiguredAdmin = (user: Parameters<Access>[0]["req"]["user"]) => {
-  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const adminEmail = configuredAdminEmail();
   return Boolean(
-    adminEmail &&
-      user &&
+    user &&
       user.collection === "users" &&
       user.email.toLowerCase() === adminEmail,
   );

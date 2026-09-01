@@ -5,6 +5,7 @@ import { login, logout } from "@payloadcms/next/auth";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { configuredAdminEmail } from "@/access/authenticated";
 import {
   clearLoginRateLimit,
   getLoginRateLimit,
@@ -32,7 +33,7 @@ export async function loginAction(
   formData: FormData,
 ): Promise<LoginState> {
   const password = passwordSchema.safeParse(formData.get("password"));
-  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const adminEmail = configuredAdminEmail();
   let rateLimit;
   try {
     rateLimit = await getLoginRateLimit();
@@ -48,7 +49,7 @@ export async function loginAction(
     };
   }
 
-  if (!password.success || !adminEmail) {
+  if (!password.success) {
     await recordLoginFailure(rateLimit.key);
     return { message: "Unable to sign in with that password." };
   }
