@@ -62,9 +62,6 @@ export default buildConfig({
       token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
   ],
-  routes: {
-    admin: "/system",
-  },
   secret: process.env.PAYLOAD_SECRET || "",
   serverURL: process.env.SERVER_URL,
   sharp,
