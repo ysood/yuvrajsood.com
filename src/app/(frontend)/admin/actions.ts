@@ -18,13 +18,27 @@ export type LoginState = {
 
 const passwordSchema = z.string().min(1).max(100);
 
+async function recordLoginFailure(key: string) {
+  try {
+    await recordFailedLogin(key);
+  } catch {
+    console.error(JSON.stringify({ event: "admin.login.rate-limit-write-failed" }));
+  }
+}
+
 export async function loginAction(
   _previousState: LoginState,
   formData: FormData,
 ): Promise<LoginState> {
   const password = passwordSchema.safeParse(formData.get("password"));
   const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  const rateLimit = await getLoginRateLimit();
+  let rateLimit;
+  try {
+    rateLimit = await getLoginRateLimit();
+  } catch {
+    console.error(JSON.stringify({ event: "admin.login.rate-limit-read-failed" }));
+    return { message: "Unable to sign in right now. Try again shortly." };
+  }
 
   if (rateLimit.retryAfterSeconds > 0) {
     return {
@@ -34,7 +48,7 @@ export async function loginAction(
   }
 
   if (!password.success || !adminEmail) {
-    await recordFailedLogin(rateLimit.key);
+    await recordLoginFailure(rateLimit.key);
     return { message: "Unable to sign in with that password." };
   }
 
@@ -45,13 +59,18 @@ export async function loginAction(
       email: adminEmail,
       password: password.data,
     });
-    await clearLoginRateLimit(rateLimit.key);
-    console.info(JSON.stringify({ event: "admin.login.succeeded" }));
   } catch {
-    await recordFailedLogin(rateLimit.key);
+    await recordLoginFailure(rateLimit.key);
     console.warn(JSON.stringify({ event: "admin.login.failed" }));
     return { message: "Unable to sign in with that password." };
   }
+
+  try {
+    await clearLoginRateLimit(rateLimit.key);
+  } catch {
+    console.error(JSON.stringify({ event: "admin.login.rate-limit-clear-failed" }));
+  }
+  console.info(JSON.stringify({ event: "admin.login.succeeded" }));
 
   redirect("/admin/cms");
 }

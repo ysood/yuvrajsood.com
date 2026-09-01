@@ -27,6 +27,11 @@ export default async function SettingsPage() {
     settings.profileImage && typeof settings.profileImage === "object"
       ? settings.profileImage.id
       : settings.profileImage || null;
+  const mediaItems = media.docs.map(toAdminMediaItem).filter((item) => item !== null);
+  if (settings.profileImage && typeof settings.profileImage === "object") {
+    const currentItem = toAdminMediaItem(settings.profileImage);
+    if (currentItem && !mediaItems.some(({ id }) => id === currentItem.id)) mediaItems.unshift(currentItem);
+  }
 
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
@@ -35,7 +40,7 @@ export default async function SettingsPage() {
       <div className="mt-10">
         <ProfileImageSettings
           blobUploadsEnabled={Boolean(process.env.BLOB_READ_WRITE_TOKEN)}
-          initialMedia={media.docs.map(toAdminMediaItem).filter((item) => item !== null)}
+          initialMedia={mediaItems}
           initialSelection={selectedID}
         />
       </div>

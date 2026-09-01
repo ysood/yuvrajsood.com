@@ -22,5 +22,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     notFound();
   }
   const [product, media] = result;
-  return <ProductEditor media={media.docs.map(toAdminMediaItem).filter((item) => item !== null)} product={toAdminProduct(product)} />;
+  const mediaItems = media.docs.map(toAdminMediaItem).filter((item) => item !== null);
+  if (product.image && typeof product.image === "object") {
+    const currentItem = toAdminMediaItem(product.image);
+    if (currentItem && !mediaItems.some(({ id }) => id === currentItem.id)) mediaItems.unshift(currentItem);
+  }
+  return <ProductEditor media={mediaItems} product={toAdminProduct(product)} />;
 }

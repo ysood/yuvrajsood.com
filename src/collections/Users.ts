@@ -1,7 +1,12 @@
 import type { CollectionConfig } from "payload";
 
+import { isConfiguredAdmin } from "@/access/authenticated";
+
 export const Users: CollectionConfig = {
   slug: "users",
+  access: {
+    admin: ({ req }) => isConfiguredAdmin(req.user),
+  },
   admin: {
     useAsTitle: "email",
   },

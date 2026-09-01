@@ -10,6 +10,7 @@ import { Media } from "./collections/Media";
 import { Products } from "./collections/Products";
 import { Users } from "./collections/Users";
 import { SiteSettings } from "./globals/SiteSettings";
+import { isConfiguredAdmin } from "./access/authenticated";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -23,7 +24,9 @@ const allowedOrigins = [
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : undefined,
   ...(process.env.ADMIN_ALLOWED_ORIGINS?.split(",") ?? []),
-].filter((origin): origin is string => Boolean(origin?.trim()));
+]
+  .filter((origin): origin is string => Boolean(origin?.trim()))
+  .map((origin) => origin.trim());
 
 export default buildConfig({
   admin: {
@@ -49,7 +52,10 @@ export default buildConfig({
     vercelBlobStorage({
       addRandomSuffix: true,
       alwaysInsertFields: true,
-      clientUploads: true,
+      clientUploads: {
+        access: ({ collectionSlug, req }) =>
+          collectionSlug === "media" && isConfiguredAdmin(req.user),
+      },
       collections: {
         media: true,
       },

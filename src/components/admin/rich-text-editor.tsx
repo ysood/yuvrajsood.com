@@ -55,7 +55,7 @@ export function RichTextEditor({ onChange, value }: { onChange: (value: Serializ
         theme: { link: "underline underline-offset-2", list: { ul: "ml-6 list-disc" }, paragraph: "mb-3" },
       }}
     >
-      <div className="overflow-hidden rounded-md border border-input bg-transparent shadow-xs focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50">
+      <div className="relative overflow-hidden rounded-md border border-input bg-transparent shadow-xs focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50">
         <Toolbar />
         <RichTextPlugin
           contentEditable={<ContentEditable aria-label="About or description" className="min-h-44 px-3 py-3 text-sm outline-none" />}

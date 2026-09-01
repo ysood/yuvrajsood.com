@@ -18,7 +18,7 @@ export function AdminShell({
 }) {
   const account = (
     <details className="group relative">
-      <summary className="flex size-10 cursor-pointer list-none items-center justify-center rounded-full border bg-card text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+      <summary className="relative flex size-10 cursor-pointer list-none items-center justify-center overflow-hidden rounded-full border bg-card text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
         {profileImage ? (
           <Image alt={profileImage.alt} className="rounded-full object-cover" fill sizes="40px" src={profileImage.thumbnailURL} />
         ) : (
