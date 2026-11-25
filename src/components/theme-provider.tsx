@@ -14,7 +14,6 @@ export function ThemeProvider({
   return (
     <NextThemesProvider
       {...props}
-      defaultTheme={isAdmin ? "light" : props.defaultTheme}
       enableSystem={isAdmin ? false : props.enableSystem}
       key={isAdmin ? "admin-theme" : "site-theme"}
       storageKey={isAdmin ? "admin-theme" : "theme"}
