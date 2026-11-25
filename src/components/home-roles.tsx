@@ -61,7 +61,7 @@ export function HomeRoles() {
               id={descriptionId}
             >
               <div className="min-h-0 overflow-hidden">
-                <p className="cursor-default pt-1 pb-2 font-mono text-xs text-muted-foreground">
+                <p className="cursor-default pt-1 pb-2 font-mono text-xs text-muted-foreground select-none">
                   {description}
                 </p>
               </div>
