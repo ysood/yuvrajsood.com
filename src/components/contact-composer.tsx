@@ -1,11 +1,10 @@
 "use client";
 
-import { ArrowUpRight, ChevronRight, Mail } from "lucide-react";
+import { ChevronRight, Mail } from "lucide-react";
 import { useActionState, useRef, useState } from "react";
 
 import { sendContactMessage, type ContactState } from "@/app/(frontend)/contact/actions";
 import styles from "@/app/(frontend)/contact/contact.module.css";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -73,13 +72,17 @@ export function ContactComposer() {
           <div aria-hidden="true" className="sr-only">
             <label>Website<input autoComplete="off" name="contactWebsite" tabIndex={-1} /></label>
           </div>
-          <div className="flex flex-wrap items-center justify-end gap-x-2 border-t px-2 py-0.5">
+          <div className="flex flex-wrap items-center justify-end gap-x-2 border-t px-3 py-1.5">
             {state.status === "error" && !pending && (
               <p className="grow px-1 py-1 text-xs text-muted-foreground" role="alert">{state.message}</p>
             )}
-            <Button className="ml-auto rounded-[4px] text-[11px]/4 font-normal" disabled={pending} size="sm" type="submit" variant="ghost">
-              {pending ? "sending…" : "send email"} <ArrowUpRight aria-hidden="true" className="size-3" />
-            </Button>
+            <button
+              className="ml-auto min-h-6 min-w-6 cursor-pointer bg-transparent text-[11px]/4 underline-offset-2 enabled:hover:underline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default disabled:opacity-50"
+              disabled={pending}
+              type="submit"
+            >
+              {pending ? "sending…" : "send"}
+            </button>
           </div>
         </form>
       )}
