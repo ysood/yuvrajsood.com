@@ -12,12 +12,6 @@
 }
 
 .action[aria-current="page"] {
-  background: var(--secondary);
-  color: var(--foreground);
-}
-
-.action:not(:disabled):hover,
-.action:focus-visible {
   color: var(--foreground);
 }
 
@@ -28,7 +22,6 @@
 
 .action:disabled {
   cursor: default;
-  opacity: 0.55;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -47,11 +40,7 @@
   bottom: calc(100% + 0.85rem);
   left: 50%;
   translate: -50% 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--popover);
-  padding: 0.2rem 0.55rem;
-  color: var(--popover-foreground);
+  color: var(--muted-foreground);
   font-size: 0.75rem;
   white-space: nowrap;
   pointer-events: none;
