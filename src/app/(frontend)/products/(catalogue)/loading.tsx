@@ -1,9 +1,15 @@
+"use client";
+
+import { useCataloguePlaceholderCount } from "./catalogue-count";
+
 export default function ProductsLoading() {
+  const count = useCataloguePlaceholderCount();
+
   return (
     <>
       <p className="sr-only" role="status">Loading products</p>
       <div aria-hidden="true" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }, (_, index) => (
+        {Array.from({ length: count }, (_, index) => (
           <div
             className="flex min-h-[344px] flex-col justify-end rounded-2xl bg-card p-4 sm:min-h-[400px] lg:aspect-square lg:min-h-0"
             key={index}
