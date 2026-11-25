@@ -1,0 +1,83 @@
+.item {
+  position: relative;
+}
+
+.action {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--muted-foreground);
+}
+
+.action[aria-current="page"] {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+
+.action:not(:disabled):hover,
+.action:focus-visible {
+  color: var(--foreground);
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.action:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.icon {
+  pointer-events: none;
+}
+
+.label {
+  position: absolute;
+  bottom: calc(100% + 0.85rem);
+  left: 50%;
+  translate: -50% 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--popover);
+  padding: 0.2rem 0.55rem;
+  color: var(--popover-foreground);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.item:has(.action:focus-visible) .label {
+  visibility: visible;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:hover .label {
+    visibility: visible;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .icon {
+    transition: transform 180ms cubic-bezier(0.2, 0.75, 0.3, 1);
+  }
+
+  .action:focus-visible .icon {
+    transform: translateY(-4px) scale(1.35);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .item:hover + .item .icon,
+  .item:has(+ .item:hover) .icon {
+    transform: translateY(-2px) scale(1.15);
+  }
+
+  .item:hover .icon {
+    transform: translateY(-5px) scale(1.45);
+  }
+}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ProductCard } from "@/components/product-card";
+import { SiteDock } from "@/components/site-dock";
 import { SiteHeader } from "@/components/site-header";
 import { Card } from "@/components/ui/card";
 import { getPayloadClient } from "@/lib/payload";
@@ -22,7 +23,7 @@ export default async function ProductsPage() {
   });
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background pb-[calc(5rem+env(safe-area-inset-bottom))] text-foreground">
       <SiteHeader />
 
       <section className="mx-auto flex w-full max-w-site flex-col items-center px-4 pb-20 pt-16 text-center sm:px-7 sm:pb-24 sm:pt-24">
@@ -51,6 +52,7 @@ export default async function ProductsPage() {
           </Card>
         )}
       </section>
+      <SiteDock current="/products" />
     </main>
   );
 }
