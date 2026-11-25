@@ -5,10 +5,22 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const roles = [
-  { id: "son", label: "Son", description: "Family and where I come from." },
-  { id: "creative-director", label: "Creative Director", description: "Ideas, images, and how they come together." },
-  { id: "founder", label: "Founder", description: "Things I’m building." },
-  { id: "student", label: "Student", description: "What I’m learning along the way." },
+  { id: "son", label: "Son", description: "love you mom and dad" },
+  {
+    id: "creative-director",
+    label: "Creative Director",
+    description: "visuals and content for international artists. the weeknd, travis scott, central cee and more.",
+  },
+  {
+    id: "founder",
+    label: "Founder",
+    description: "multidisciplinary creative and software studio. helping SMBs integrate AI into their operations.",
+  },
+  {
+    id: "student",
+    label: "Student",
+    description: "Software Engineering Honours student at the University of Sydney. Major in Engineering Data Science. Minor in Innovation & Entrepreneurship.",
+  },
 ];
 
 export function HomeRoles() {
@@ -16,8 +28,9 @@ export function HomeRoles() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const activeRole = hoveredRole ?? selectedRole;
 
+  // Center the collapsed stack so expanding a row keeps its label under the pointer.
   return (
-    <ul className="grid justify-items-center gap-1 px-4 text-center text-sm">
+    <ul className="grid h-27 content-start gap-1 text-center text-sm">
       {roles.map(({ id, label, description }) => {
         const isVisible = activeRole === id;
         const descriptionId = `role-description-${id}`;
@@ -27,7 +40,7 @@ export function HomeRoles() {
             <button
               aria-controls={descriptionId}
               aria-expanded={isVisible}
-              className="min-h-8 cursor-pointer rounded-sm px-2 focus-visible:outline-2 focus-visible:outline-ring"
+              className="mx-auto block min-h-6 cursor-pointer rounded-sm px-2 focus-visible:outline-2 focus-visible:outline-ring"
               onClick={() => {
                 setHoveredRole(null);
                 setSelectedRole((current) => (current === id ? null : id));
@@ -39,16 +52,20 @@ export function HomeRoles() {
             >
               {label}
             </button>
-            <p
+            <div
               aria-hidden={!isVisible}
               className={cn(
-                "font-mono text-xs text-muted-foreground motion-safe:transition motion-safe:duration-150",
-                isVisible ? "opacity-100" : "opacity-0 motion-safe:-translate-y-1",
+                "grid motion-safe:transition-[grid-template-rows,opacity] motion-safe:duration-200",
+                isVisible ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
               )}
               id={descriptionId}
             >
-              {description}
-            </p>
+              <div className="min-h-0 overflow-hidden">
+                <p className="pt-1 pb-2 font-mono text-xs text-balance text-muted-foreground">
+                  {description}
+                </p>
+              </div>
+            </div>
           </li>
         );
       })}
