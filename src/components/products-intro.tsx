@@ -17,7 +17,7 @@ export function ProductsIntro() {
           <button
             aria-controls="products-intro-description"
             aria-expanded={expanded}
-            className="relative mx-auto block min-h-6 cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-ring"
+            className="relative mx-auto block min-h-6 cursor-pointer rounded-sm px-2 focus-visible:outline-2 focus-visible:outline-ring"
             onClick={() => {
               dismissHint();
               setHovered(false);
