@@ -1,5 +1,12 @@
 import { SiteHeader } from "@/components/site-header";
 
+const roles = [
+  { id: "son", label: "Son" },
+  { id: "creative-director", label: "Creative Director" },
+  { id: "founder", label: "Founder" },
+  { id: "student", label: "Student" },
+];
+
 export default function Home() {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background text-foreground">
@@ -7,7 +14,11 @@ export default function Home() {
         <SiteHeader hideNavigation />
       </div>
       <main>
-        <h1 className="text-sm">experience in development.</h1>
+        <ul className="grid gap-2 text-center text-sm">
+          {roles.map((role) => (
+            <li key={role.id}>{role.label}</li>
+          ))}
+        </ul>
       </main>
     </div>
   );
