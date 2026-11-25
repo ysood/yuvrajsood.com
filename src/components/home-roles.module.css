@@ -3,7 +3,7 @@
   inset-inline-start: 100%;
   top: 50%;
   translate: 0 -50%;
-  white-space: nowrap;
+  letter-spacing: 0.16em;
   opacity: 0;
 }
 

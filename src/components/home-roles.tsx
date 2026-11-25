@@ -100,7 +100,7 @@ export function HomeRoles() {
                   className={`${styles.hint} pointer-events-none select-none font-mono text-xs text-muted-foreground`}
                   style={{ animationDelay: `${0.5 + index * 2}s` }}
                 >
-                  + +
+                  ++
                 </span>
               )}
             </button>
