@@ -33,15 +33,17 @@
 
 .icon {
   pointer-events: none;
+  stroke-width: 1;
 }
 
 .label {
   position: absolute;
-  bottom: calc(100% + 0.85rem);
+  bottom: calc(100% + 1.5rem);
   left: 50%;
   translate: calc(-50% + var(--dock-shift, 0px)) 0;
   color: var(--muted-foreground);
   font-size: 0.75rem;
+  text-transform: lowercase;
   white-space: nowrap;
   pointer-events: none;
   visibility: hidden;
