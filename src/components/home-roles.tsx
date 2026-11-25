@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 
+import { DisclosureLabel, labelFadeMs, useDisclosureHint } from "./disclosure-label";
 import styles from "./home-roles.module.css";
 
 const roles: { id: string; label: string; description: string; note?: string }[] = [
@@ -29,50 +30,15 @@ const roles: { id: string; label: string; description: string; note?: string }[]
 ];
 
 const roleHintKey = "home-role-hint-dismissed";
-const roleEntranceMs = 680;
 const roleStaggerMs = 130;
-const firstHintDelayMs = roleEntranceMs + (roles.length - 1) * roleStaggerMs + 80;
-
-function subscribeToSessionStorage(onChange: () => void) {
-  window.addEventListener("storage", onChange);
-  return () => window.removeEventListener("storage", onChange);
-}
-
-function readRoleHintDismissal() {
-  try {
-    return sessionStorage.getItem(roleHintKey) === "1";
-  } catch {
-    return false;
-  }
-}
-
-function getServerRoleHintDismissal() {
-  return false;
-}
+const firstHintDelayMs = labelFadeMs + (roles.length - 1) * roleStaggerMs + 80;
 
 export function HomeRoles() {
   const [hoveredRole, setHoveredRole] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
-  const [hasExpandedRole, setHasExpandedRole] = useState(false);
-  const sessionDismissedHint = useSyncExternalStore(
-    subscribeToSessionStorage,
-    readRoleHintDismissal,
-    getServerRoleHintDismissal,
-  );
-  const showHint = !hasExpandedRole && !sessionDismissedHint;
+  const { showHint, dismissHint } = useDisclosureHint(roleHintKey);
   const activeRole = hoveredRole ?? selectedRole;
   const hoverNote = roles.find(({ id }) => id === hoveredRole)?.note;
-
-  function dismissHint() {
-    if (!showHint) return;
-
-    setHasExpandedRole(true);
-    try {
-      sessionStorage.setItem(roleHintKey, "1");
-    } catch {
-      // The local state also dismisses the hint when storage is unavailable.
-    }
-  }
 
   // Center the collapsed stack so expanding a row keeps its label under the pointer.
   return (
@@ -101,21 +67,11 @@ export function HomeRoles() {
                 }}
                 type="button"
               >
-                <span
-                  className={`${styles.label} block`}
-                  style={{ animationDuration: `${roleEntranceMs}ms`, animationDelay: `${index * roleStaggerMs}ms` }}
-                >
-                  {label}
-                </span>
-                {showHint && (
-                  <span
-                    aria-hidden="true"
-                    className={`${styles.hint} pointer-events-none select-none font-mono text-xs text-muted-foreground`}
-                    style={{ animationDelay: `${firstHintDelayMs + index * 2000}ms` }}
-                  >
-                    ++
-                  </span>
-                )}
+                <DisclosureLabel
+                  label={label}
+                  fadeDelay={index * roleStaggerMs}
+                  hintDelay={showHint ? firstHintDelayMs + index * 2000 : undefined}
+                />
               </button>
               <div
                 aria-hidden={!isVisible}

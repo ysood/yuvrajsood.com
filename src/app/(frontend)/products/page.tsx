@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 
 import { ProductCard } from "@/components/product-card";
+import { ProductsIntro } from "@/components/products-intro";
 import { SiteDock } from "@/components/site-dock";
 import { SiteHeader } from "@/components/site-header";
 import { Card } from "@/components/ui/card";
 import { getPayloadClient } from "@/lib/payload";
+
+import styles from "./products.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -26,16 +29,9 @@ export default async function ProductsPage() {
     <main className="min-h-screen bg-background pb-[calc(5rem+env(safe-area-inset-bottom))] text-foreground">
       <SiteHeader hideNavigation />
 
-      <section className="mx-auto flex w-full max-w-site flex-col items-center px-4 pb-12 pt-6 text-center sm:px-7 sm:pb-16 sm:pt-8">
-        <h1 className="text-sm font-normal">
-          of all the things i use every day, these are the ones i’d recommend to a friend
-        </h1>
-        <p className="mt-2 max-w-xl text-pretty font-mono text-xs text-muted-foreground">
-          a few of these brands have kindly offered you a discount through the links below, and i’m grateful for their support.
-        </p>
-      </section>
+      <ProductsIntro />
 
-      <section className="mx-auto w-full max-w-site px-4 pb-8 sm:px-7 sm:pb-12">
+      <section className={`${styles.catalogue} mx-auto w-full max-w-site px-4 pb-8 sm:px-7 sm:pb-12`}>
         {products.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (

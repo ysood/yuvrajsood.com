@@ -1,48 +1,14 @@
-.hint {
-  position: absolute;
-  inset-inline-start: 100%;
-  top: 50%;
-  translate: 0 -50%;
-  letter-spacing: 0.16em;
-  opacity: 0;
-}
-
 .note {
   visibility: hidden;
   animation: role-note-in 0s ease-out 1s forwards;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .label {
-    animation-name: role-fade-in;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: both;
-  }
-
-  button:focus-visible .label {
-    opacity: 1 !important;
-  }
-
-  .hint {
-    animation: role-hint 8s ease-in-out infinite;
-  }
-
   .note {
     /* Wait for the 200ms description reveal, then give it one second. */
     animation-delay: 1.2s;
     animation-duration: 320ms;
   }
-}
-
-@keyframes role-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Each role has a 2s slot in the four-role loop. */
-@keyframes role-hint {
-  0%, 22%, 100% { opacity: 0; }
-  8%, 14% { opacity: 1; }
 }
 
 @keyframes role-note-in {
