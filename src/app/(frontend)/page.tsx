@@ -1,11 +1,5 @@
+import { HomeRoles } from "@/components/home-roles";
 import { SiteHeader } from "@/components/site-header";
-
-const roles = [
-  { id: "son", label: "Son" },
-  { id: "creative-director", label: "Creative Director" },
-  { id: "founder", label: "Founder" },
-  { id: "student", label: "Student" },
-];
 
 export default function Home() {
   return (
@@ -14,11 +8,7 @@ export default function Home() {
         <SiteHeader hideNavigation />
       </div>
       <main>
-        <ul className="grid gap-2 text-center text-sm">
-          {roles.map((role) => (
-            <li key={role.id}>{role.label}</li>
-          ))}
-        </ul>
+        <HomeRoles />
       </main>
     </div>
   );
