@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Mail } from "lucide-react";
+import { ArrowUpRight, ChevronRight, Mail } from "lucide-react";
 import { useActionState, useRef, useState } from "react";
 
 import { sendContactMessage, type ContactState } from "@/app/(frontend)/contact/actions";
@@ -77,11 +77,12 @@ export function ContactComposer() {
               <p className="grow px-1 py-1 text-xs text-muted-foreground" role="alert">{state.message}</p>
             )}
             <button
-              className="ml-auto min-h-6 min-w-6 cursor-pointer bg-transparent text-[11px]/4 underline-offset-2 enabled:hover:underline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default disabled:opacity-50"
+              className="ml-auto inline-flex min-h-6 min-w-6 cursor-pointer items-center gap-1.5 bg-transparent text-[11px]/4 underline-offset-2 enabled:hover:underline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default disabled:opacity-50"
               disabled={pending}
               type="submit"
             >
               {pending ? "sending…" : "send"}
+              <ArrowUpRight aria-hidden="true" className="size-3" />
             </button>
           </div>
         </form>
