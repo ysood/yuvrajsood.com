@@ -73,15 +73,16 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .heading {
-    animation: heading-fade-in 680ms ease-in-out both;
+  .heading,
+  .sentOverlay {
+    animation: contact-fade-in 680ms ease-in-out both;
   }
 
   .reveal {
     animation: composer-in 850ms cubic-bezier(0.22, 1, 0.36, 1) 760ms both;
   }
 
-  .error {
+  .feedback {
     animation: contact-in 320ms ease-out both;
   }
 
@@ -96,7 +97,7 @@
   }
 }
 
-@keyframes heading-fade-in {
+@keyframes contact-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
