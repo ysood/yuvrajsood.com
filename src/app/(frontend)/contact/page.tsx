@@ -18,7 +18,7 @@ export default function ContactPage() {
         <SiteHeader hideNavigation />
       </div>
       <main className="w-full max-w-site px-4 sm:px-7">
-        <div className={`mx-auto w-full max-w-[23rem] ${styles.sequence}`}>
+        <div className={`mx-auto w-full max-w-[19rem] ${styles.sequence}`}>
           <h1 className={`text-center text-sm font-normal ${styles.heading}`}>What&apos;s on your mind?</h1>
           <div className={`grid grid-rows-[1fr] ${styles.reveal}`}>
             <div className="min-h-0 overflow-hidden">

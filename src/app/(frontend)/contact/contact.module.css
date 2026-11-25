@@ -11,6 +11,26 @@
   overflow-wrap: anywhere;
 }
 
+.messageEditor textarea {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted-foreground) transparent;
+}
+
+@supports not (scrollbar-color: currentColor transparent) {
+  .messageEditor textarea::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .messageEditor textarea::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .messageEditor textarea::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: 999px;
+  }
+}
+
 @supports not (field-sizing: content) {
   .messageEditor {
     display: grid;

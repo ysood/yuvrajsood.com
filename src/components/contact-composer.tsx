@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-const addressRow = "grid min-w-0 grid-cols-[2rem_minmax(0,1fr)] items-center gap-1 border-b px-3 py-1.5 text-xs";
+const addressRow = "grid min-w-0 grid-cols-[1.75rem_minmax(0,1fr)] items-center gap-1 border-b px-3 py-1 text-[11px]/4";
 const initialState: ContactState = { status: "idle" };
 
 export function ContactComposer() {
@@ -19,9 +19,9 @@ export function ContactComposer() {
   const requestId = useRef<string | null>(null);
 
   return (
-    <div className="mt-4 overflow-hidden rounded-lg border bg-card text-card-foreground">
+    <div className="mt-4 overflow-hidden rounded-[6px] border bg-card font-mono text-card-foreground">
       {state.status === "sent" ? (
-        <p className="px-3 py-4 text-center text-sm" ref={(node) => node?.focus()} tabIndex={-1}>
+        <p className="px-3 py-4 text-center text-xs" ref={(node) => node?.focus()} tabIndex={-1}>
           Message sent.
         </p>
       ) : (
@@ -33,7 +33,7 @@ export function ContactComposer() {
           }}
           aria-busy={pending}
         >
-          <p className={`${addressRow} py-2.5`}>
+          <p className={`${addressRow} py-2`}>
             <span className="text-muted-foreground">to</span>
             <span>Yuvraj Sood</span>
           </p>
@@ -42,7 +42,7 @@ export function ContactComposer() {
             <Input
               aria-label="From email"
               autoComplete="email"
-              className="h-7 rounded-sm border-0 bg-transparent px-1 text-foreground shadow-none dark:bg-transparent"
+              className="h-6 rounded-[3px] border-0 bg-transparent px-0 text-xs text-foreground shadow-none focus-visible:ring-1 md:text-xs dark:bg-transparent"
               maxLength={254}
               name="email"
               onChange={(event) => {
@@ -56,10 +56,10 @@ export function ContactComposer() {
               value={email}
             />
           </label>
-          <div className={`p-2 text-base md:text-sm ${styles.messageEditor}`} data-message={message}>
+          <div className={`p-2 text-xs ${styles.messageEditor}`} data-message={message}>
             <Textarea
               aria-label="Message"
-              className="resize-none overflow-y-auto rounded-sm border-0 bg-transparent px-1 shadow-none dark:bg-transparent"
+              className="resize-none overflow-y-auto rounded-[3px] border-0 bg-transparent px-1 text-xs shadow-none focus-visible:ring-1 md:text-xs dark:bg-transparent"
               maxLength={3000}
               name="message"
               onChange={(event) => {
@@ -75,11 +75,11 @@ export function ContactComposer() {
           <div aria-hidden="true" className="sr-only">
             <label>Website<input autoComplete="off" name="contactWebsite" tabIndex={-1} /></label>
           </div>
-          <div className="flex flex-wrap items-center justify-end gap-x-2 border-t px-2 py-1.5">
+          <div className="flex flex-wrap items-center justify-end gap-x-2 border-t px-2 py-0.5">
             {state.status === "error" && !pending && (
               <p className="grow px-1 py-1 text-xs text-muted-foreground" role="alert">{state.message}</p>
             )}
-            <Button className="ml-auto text-xs font-normal" disabled={pending} size="sm" type="submit" variant="ghost">
+            <Button className="ml-auto rounded-[4px] text-[11px]/4 font-normal" disabled={pending} size="sm" type="submit" variant="ghost">
               {pending ? "sending…" : "send email"} <ArrowUpRight aria-hidden="true" className="size-3" />
             </Button>
           </div>
