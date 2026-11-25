@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 
+import styles from "./home-roles.module.css";
+
 const roles = [
   { id: "son", label: "son", description: "love you mom and dad" },
   {
@@ -26,12 +28,13 @@ const roles = [
 export function HomeRoles() {
   const [hoveredRole, setHoveredRole] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [hasExpandedRole, setHasExpandedRole] = useState(false);
   const activeRole = hoveredRole ?? selectedRole;
 
   // Center the collapsed stack so expanding a row keeps its label under the pointer.
   return (
     <ul className="grid h-27 content-start gap-1 text-center text-sm">
-      {roles.map(({ id, label, description }) => {
+      {roles.map(({ id, label, description }, index) => {
         const isVisible = activeRole === id;
         const descriptionId = `role-description-${id}`;
 
@@ -40,17 +43,30 @@ export function HomeRoles() {
             <button
               aria-controls={descriptionId}
               aria-expanded={isVisible}
-              className="mx-auto block min-h-6 cursor-pointer rounded-sm px-2 focus-visible:outline-2 focus-visible:outline-ring"
+              className="relative mx-auto block min-h-6 cursor-pointer rounded-sm px-2 focus-visible:outline-2 focus-visible:outline-ring"
               onClick={() => {
+                setHasExpandedRole(true);
                 setHoveredRole(null);
                 setSelectedRole((current) => (current === id ? null : id));
               }}
               onPointerEnter={(event) => {
-                if (event.pointerType === "mouse") setHoveredRole(id);
+                if (event.pointerType === "mouse") {
+                  setHasExpandedRole(true);
+                  setHoveredRole(id);
+                }
               }}
               type="button"
             >
               {label}
+              {!hasExpandedRole && (
+                <span
+                  aria-hidden="true"
+                  className={`${styles.hint} pointer-events-none select-none font-mono text-xs text-muted-foreground`}
+                  style={{ animationDelay: `${0.5 + index * 1.6}s` }}
+                >
+                  ++
+                </span>
+              )}
             </button>
             <div
               aria-hidden={!isVisible}
