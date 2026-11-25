@@ -82,7 +82,7 @@ export function ContactComposer() {
               type="submit"
             >
               {pending ? "sending…" : "send"}
-              <ArrowUpRight aria-hidden="true" className="size-3" />
+              <ArrowUpRight aria-hidden="true" className="size-3 text-muted-foreground" />
             </button>
           </div>
         </form>
