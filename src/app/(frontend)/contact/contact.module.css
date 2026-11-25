@@ -48,7 +48,7 @@
   .messageEditor::after {
     /* The final space makes a trailing newline occupy its own line. */
     content: attr(data-message) " ";
-    padding: var(--message-padding) 0.25rem;
+    padding-block: var(--message-padding);
     overflow: hidden;
     visibility: hidden;
     white-space: pre-wrap;
