@@ -21,7 +21,9 @@ export function ContactComposer() {
   return (
     <>
       <div className={`row-start-2 mx-auto w-full max-w-[19rem] ${styles.sequence}`}>
-        <h1 className={`text-center text-sm font-normal ${styles.heading}`}>what&apos;s on your mind?</h1>
+        <h1 className="overflow-clip text-center text-sm font-normal">
+          <span className={`block ${styles.headingText}`}>what&apos;s on your mind?</span>
+        </h1>
         <div className={styles.reveal}>
           <div>
             <div className="mt-4 overflow-hidden rounded-[6px] border bg-card font-mono text-card-foreground">
@@ -73,10 +75,10 @@ export function ContactComposer() {
                   </div>
                   <label className="group grid grid-cols-[0.75rem_minmax(0,1fr)] items-start gap-2 border-t px-3 py-1">
                     <ChevronRight aria-hidden="true" className="mt-3 size-3 text-muted-foreground group-focus-within:text-foreground" strokeWidth={1.5} />
-                    <span className={`text-xs ${styles.messageEditor}`} data-message={message}>
+                    <span className={`text-[11px] ${styles.messageEditor}`} data-message={message}>
                       <Textarea
                         aria-label="Message"
-                        className="resize-none overflow-y-auto rounded-[3px] border-0 bg-transparent px-0 text-xs text-foreground shadow-none focus-visible:ring-0 md:text-xs dark:bg-transparent"
+                        className="resize-none overflow-y-auto rounded-[3px] border-0 bg-transparent px-0 text-[11px] text-foreground shadow-none focus-visible:ring-0 md:text-[11px] dark:bg-transparent"
                         maxLength={3000}
                         name="message"
                         onChange={(event) => {

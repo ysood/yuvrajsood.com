@@ -73,24 +73,32 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .heading {
-    animation: contact-in 650ms ease-out both;
+  .headingText {
+    animation: heading-in 540ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .reveal {
-    animation: composer-in 850ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both;
+    animation: composer-in 850ms cubic-bezier(0.22, 1, 0.36, 1) 600ms both;
   }
 
   .error {
     animation: contact-in 320ms ease-out both;
   }
 
-  .sequence:focus-within > :is(.heading, .reveal) {
-    /* Let keyboard users reach the form immediately. */
+  /* Let keyboard users reach the form immediately. */
+  .sequence:focus-within > .reveal {
     grid-template-rows: 1fr !important;
     opacity: 1 !important;
+  }
+
+  .sequence:focus-within .headingText {
     transform: none !important;
   }
+}
+
+@keyframes heading-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 @keyframes contact-in {
