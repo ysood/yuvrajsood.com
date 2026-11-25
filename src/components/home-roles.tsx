@@ -9,7 +9,7 @@ const roles = [
   {
     id: "creative-director",
     label: "Creative Director",
-    description: "visuals and content for international artists. the weeknd, travis scott, central cee and more.",
+    description: "visual media for international artists targeted at audiences north of 100 million people.",
   },
   {
     id: "founder",
