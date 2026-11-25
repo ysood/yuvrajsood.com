@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatPrice } from "@/lib/format-price";
 import { getPayloadClient } from "@/lib/payload";
+import { getProductImageSource } from "@/lib/product-image-source";
 import type { Media } from "@/payload-types";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +58,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     product.image && typeof product.image === "object"
       ? (product.image as Media)
       : null;
+  const imageSource = image && getProductImageSource(image);
 
   return (
     <main className="min-h-screen bg-background pb-24 text-foreground sm:pb-20">
@@ -100,13 +102,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
 
         <Card className="relative flex h-[360px] items-center justify-center overflow-hidden rounded-3xl border-0 p-4 shadow-none sm:h-[560px] sm:p-10 lg:h-[720px]">
-          {image?.url ? (
+          {image && imageSource ? (
             <ProductImage
               alt={image.alt}
               className="object-contain p-8 sm:p-16"
               priority
               sizes="(max-width: 639px) 90vw, 94vw"
-              src={image.url}
+              {...imageSource}
             />
           ) : null}
         </Card>

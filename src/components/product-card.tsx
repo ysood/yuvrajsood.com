@@ -3,15 +3,16 @@ import Link from "next/link";
 
 import type { Media, Product } from "@/payload-types";
 import { formatPrice } from "@/lib/format-price";
+import { getProductImageSource } from "@/lib/product-image-source";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { ProductImage } from "@/components/product-image";
 
-const hasMedia = (image: Product["image"]): image is Media =>
-  Boolean(image && typeof image === "object" && image.url);
-
 export function ProductCard({ product }: { product: Product }) {
+  const image: Media | null = product.image && typeof product.image === "object" ? product.image : null;
+  const imageSource = image && getProductImageSource(image);
+
   return (
     <Card className="group relative min-h-[344px] gap-0 overflow-hidden rounded-2xl border-0 py-0 shadow-none sm:min-h-[400px] lg:aspect-square lg:min-h-0">
       <Link
@@ -21,12 +22,12 @@ export function ProductCard({ product }: { product: Product }) {
       />
 
       <CardContent className="relative flex min-h-0 flex-1 items-center justify-center p-6 sm:p-8">
-        {hasMedia(product.image) ? (
+        {image && imageSource ? (
           <ProductImage
-            alt={product.image.alt}
+            alt={image.alt}
             className="object-contain p-10 sm:p-12"
             sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 32vw"
-            src={product.image.url!}
+            {...imageSource}
           />
         ) : null}
 
