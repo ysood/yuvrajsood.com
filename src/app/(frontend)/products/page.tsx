@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Products",
-  description: "Here are some of the things I use.",
+  description: "Of all the things I use every day, these are the ones I’d recommend to a friend.",
 };
 
 export default async function ProductsPage() {
@@ -28,7 +28,7 @@ export default async function ProductsPage() {
 
       <section className="mx-auto flex w-full max-w-site flex-col items-center px-4 pb-12 pt-6 text-center sm:px-7 sm:pb-16 sm:pt-8">
         <h1 className="text-sm font-normal">
-          here are some of the things i use.
+          of all the things i use every day, these are the ones i’d recommend to a friend
         </h1>
         <p className="mt-2 font-mono text-xs text-muted-foreground">
           some links may earn me a commission.
