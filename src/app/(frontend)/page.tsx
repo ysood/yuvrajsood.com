@@ -7,7 +7,7 @@ export default function Home() {
       <div className="absolute inset-x-0 top-0">
         <SiteHeader hideNavigation />
       </div>
-      <main className="w-full max-w-md px-4">
+      <main className="w-full max-w-site px-4 sm:px-7">
         <HomeRoles />
       </main>
     </div>

@@ -36,7 +36,7 @@ export function HomeRoles() {
         const descriptionId = `role-description-${id}`;
 
         return (
-          <li key={id} onPointerLeave={() => setHoveredRole(null)}>
+          <li className="w-fit max-w-full justify-self-center" key={id} onPointerLeave={() => setHoveredRole(null)}>
             <button
               aria-controls={descriptionId}
               aria-expanded={isVisible}
@@ -61,7 +61,7 @@ export function HomeRoles() {
               id={descriptionId}
             >
               <div className="min-h-0 overflow-hidden">
-                <p className="pt-1 pb-2 font-mono text-xs text-balance text-muted-foreground">
+                <p className="pt-1 pb-2 font-mono text-xs text-muted-foreground">
                   {description}
                 </p>
               </div>
