@@ -1,5 +1,8 @@
+"use client";
+
 import { House, Mail, Package } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { BackToTop } from "./back-to-top";
 import { DockLinkStatus } from "./dock-link-status";
@@ -12,7 +15,10 @@ const destinations = [
   { label: "Contact", href: "/contact", Icon: Mail },
 ] as const;
 
-export function SiteDock({ current }: { current: (typeof destinations)[number]["href"] }) {
+export function SiteDock() {
+  const current = usePathname();
+  if (!destinations.some(({ href }) => href === current)) return null;
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex justify-center px-4">
       <nav aria-label="Quick navigation" className={styles.navigation}>

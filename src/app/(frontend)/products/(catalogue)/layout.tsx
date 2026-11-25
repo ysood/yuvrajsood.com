@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { ProductsIntro } from "@/components/products-intro";
-import { SiteDock } from "@/components/site-dock";
 import { SiteHeader } from "@/components/site-header";
 
 import styles from "../products.module.css";
@@ -20,7 +19,6 @@ export default function ProductsLayout({ children }: { children: ReactNode }) {
       <section className={`${styles.catalogue} mx-auto w-full max-w-site px-4 pb-8 sm:px-7 sm:pb-12`}>
         {children}
       </section>
-      <SiteDock current="/products" />
     </main>
   );
 }

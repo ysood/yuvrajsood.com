@@ -1,5 +1,4 @@
 import { HomeRoles } from "@/components/home-roles";
-import { SiteDock } from "@/components/site-dock";
 import { SiteHeader } from "@/components/site-header";
 
 export default function Home() {
@@ -11,7 +10,6 @@ export default function Home() {
       <main className="grid w-full max-w-site grid-rows-[minmax(4rem,1fr)_auto_minmax(4rem,1fr)] px-4 sm:px-7">
         <HomeRoles />
       </main>
-      <SiteDock current="/" />
     </div>
   );
 }

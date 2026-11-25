@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { ContactComposer } from "@/components/contact-composer";
-import { SiteDock } from "@/components/site-dock";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
@@ -18,7 +17,6 @@ export default function ContactPage() {
       <main className="grid w-full max-w-site grid-rows-[minmax(2rem,1fr)_auto_minmax(2rem,1fr)] px-4 sm:px-7">
         <ContactComposer />
       </main>
-      <SiteDock current="/contact" />
     </div>
   );
 }
