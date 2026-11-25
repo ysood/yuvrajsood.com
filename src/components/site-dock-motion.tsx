@@ -134,5 +134,9 @@ export function SiteDockMotion({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  return <ul className="pointer-events-auto flex gap-2" ref={dockRef}>{children}</ul>;
+  return (
+    <ul className="pointer-events-auto flex gap-2 rounded-full bg-background px-3 py-1.5" ref={dockRef}>
+      {children}
+    </ul>
+  );
 }
