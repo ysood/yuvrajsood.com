@@ -29,6 +29,9 @@ const roles: { id: string; label: string; description: string; note?: string }[]
 ];
 
 const roleHintKey = "home-role-hint-dismissed";
+const roleEntranceMs = 420;
+const roleStaggerMs = 60;
+const firstHintDelayMs = roleEntranceMs + (roles.length - 1) * roleStaggerMs + 80;
 
 function subscribeToSessionStorage(onChange: () => void) {
   window.addEventListener("storage", onChange);
@@ -98,12 +101,19 @@ export function HomeRoles() {
                 }}
                 type="button"
               >
-                {label}
+                <span className="block overflow-clip">
+                  <span
+                    className={`${styles.label} block`}
+                    style={{ animationDuration: `${roleEntranceMs}ms`, animationDelay: `${index * roleStaggerMs}ms` }}
+                  >
+                    {label}
+                  </span>
+                </span>
                 {showHint && (
                   <span
                     aria-hidden="true"
                     className={`${styles.hint} pointer-events-none select-none font-mono text-xs text-muted-foreground`}
-                    style={{ animationDelay: `${0.5 + index * 2}s` }}
+                    style={{ animationDelay: `${firstHintDelayMs + index * 2000}ms` }}
                   >
                     ++
                   </span>
