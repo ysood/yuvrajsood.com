@@ -25,7 +25,7 @@ const roles: { id: string; label: string; description: string; note?: string }[]
     id: "student",
     label: "student",
     description: "software engineering honours at the university of sydney. major in engineering data science. minor in innovation & entrepreneurship.",
-    note: "wrote a thesis on a multi-agent ai system for automating regulatory compliance in cross-border medical data transfers.",
+    note: "authored a thesis on a multi-agent ai system that automates regulatory compliance in cross-border medical data transfers.",
   },
 ];
 
