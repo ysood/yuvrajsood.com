@@ -81,7 +81,7 @@
     animation: composer-in 850ms cubic-bezier(0.22, 1, 0.36, 1) 760ms both;
   }
 
-  .error {
+  .feedback {
     animation: contact-in 320ms ease-out both;
   }
 
