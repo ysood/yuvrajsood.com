@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useActionState, useRef, useState } from "react";
 
 import { sendContactMessage, type ContactState } from "@/app/(frontend)/contact/actions";
+import styles from "@/app/(frontend)/contact/contact.module.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,10 +56,10 @@ export function ContactComposer() {
               value={email}
             />
           </label>
-          <div className="p-2">
+          <div className={`p-2 text-base md:text-sm ${styles.messageEditor}`} data-message={message}>
             <Textarea
               aria-label="Message"
-              className="field-sizing-fixed min-h-28 resize-y rounded-sm border-0 bg-transparent px-1 shadow-none dark:bg-transparent"
+              className="resize-none overflow-y-auto rounded-sm border-0 bg-transparent px-1 shadow-none dark:bg-transparent"
               maxLength={3000}
               name="message"
               onChange={(event) => {

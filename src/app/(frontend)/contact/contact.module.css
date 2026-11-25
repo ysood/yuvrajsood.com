@@ -1,3 +1,40 @@
+.messageEditor {
+  --message-line-height: 1.25rem;
+  --message-padding: 0.5rem;
+}
+
+.messageEditor textarea,
+.messageEditor::after {
+  min-height: calc(5 * var(--message-line-height) + 2 * var(--message-padding));
+  max-height: calc(10 * var(--message-line-height) + 2 * var(--message-padding));
+  line-height: var(--message-line-height);
+  overflow-wrap: anywhere;
+}
+
+@supports not (field-sizing: content) {
+  .messageEditor {
+    display: grid;
+  }
+
+  .messageEditor textarea,
+  .messageEditor::after {
+    grid-area: 1 / 1;
+  }
+
+  .messageEditor textarea {
+    height: 100%;
+  }
+
+  .messageEditor::after {
+    /* The final space makes a trailing newline occupy its own line. */
+    content: attr(data-message) " ";
+    padding: var(--message-padding) 0.25rem;
+    overflow: hidden;
+    visibility: hidden;
+    white-space: pre-wrap;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .heading {
     animation: heading-in 0.65s ease-out both;
