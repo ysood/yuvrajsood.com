@@ -32,7 +32,6 @@ export default async function ProductsPage() {
         </h1>
         <p className="mt-2 max-w-xl text-pretty font-mono text-xs text-muted-foreground">
           a few of these brands have kindly offered you a discount through the links below, and i’m grateful for their support.
-          i may earn a commission from some links.
         </p>
       </section>
 
