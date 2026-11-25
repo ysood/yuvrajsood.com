@@ -128,7 +128,10 @@ export function HomeRoles() {
         })}
       </ul>
       {hoverNote && (
-        <p className="pointer-events-none row-start-3 self-center justify-self-center text-center font-mono text-xs text-muted-foreground select-none">
+        <p
+          className={`${styles.note} pointer-events-none row-start-3 self-center justify-self-center text-center font-mono text-xs text-muted-foreground select-none`}
+          key={hoveredRole}
+        >
           {hoverNote}
         </p>
       )}

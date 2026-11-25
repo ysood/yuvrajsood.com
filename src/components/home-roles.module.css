@@ -7,9 +7,20 @@
   opacity: 0;
 }
 
+.note {
+  visibility: hidden;
+  animation: role-note-in 0s ease-out 2s forwards;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .hint {
     animation: role-hint 8s ease-in-out infinite;
+  }
+
+  .note {
+    /* Wait for the 200ms description reveal, then give it two seconds. */
+    animation-delay: 2.2s;
+    animation-duration: 320ms;
   }
 }
 
@@ -17,4 +28,9 @@
 @keyframes role-hint {
   0%, 22%, 100% { opacity: 0; }
   8%, 14% { opacity: 1; }
+}
+
+@keyframes role-note-in {
+  from { opacity: 0; visibility: visible; }
+  to { opacity: 1; visibility: visible; }
 }
