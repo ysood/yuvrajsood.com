@@ -9,7 +9,7 @@
 
 .note {
   visibility: hidden;
-  animation: role-note-in 0s ease-out 2s forwards;
+  animation: role-note-in 0s ease-out 1s forwards;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -18,8 +18,8 @@
   }
 
   .note {
-    /* Wait for the 200ms description reveal, then give it two seconds. */
-    animation-delay: 2.2s;
+    /* Wait for the 200ms description reveal, then give it one second. */
+    animation-delay: 1.2s;
     animation-duration: 320ms;
   }
 }
