@@ -15,6 +15,14 @@
   color: var(--foreground);
 }
 
+.navigation:has([data-dock-pending]) .action[aria-current="page"]:not(:has([data-dock-pending])) {
+  color: var(--muted-foreground);
+}
+
+.navigation .action:has([data-dock-pending]) {
+  color: var(--foreground);
+}
+
 .action:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
@@ -56,6 +64,10 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .action {
+    transition: color 140ms ease-out;
+  }
+
   .action:focus-visible .icon {
     transition: transform 180ms cubic-bezier(0.2, 0.75, 0.3, 1);
     transform: translateY(-4px) scale(1.35);
