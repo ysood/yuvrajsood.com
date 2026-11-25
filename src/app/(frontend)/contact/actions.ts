@@ -11,11 +11,19 @@ export type ContactState =
   | { status: "idle" | "sent" }
   | { status: "error"; message: string };
 
-const emailAddress = z.string().trim().max(254).pipe(z.email());
+const emailAddress = z
+  .string("Enter a valid email address.")
+  .trim()
+  .max(254, "Email address must be 254 characters or fewer.")
+  .pipe(z.email("Enter a valid email address."));
 const contactSchema = z.object({
   email: emailAddress,
-  message: z.string().trim().min(1).max(3000),
-  requestId: z.uuid(),
+  message: z
+    .string("Write a message before sending.")
+    .trim()
+    .min(1, "Write a message before sending.")
+    .max(3000, "Keep your message to 3,000 characters or fewer."),
+  requestId: z.uuid("Please try sending your message again."),
 });
 
 const rateWindow = 10 * 60 * 1000;
@@ -54,7 +62,7 @@ export async function sendContactMessage(_previous: ContactState, formData: Form
     requestId: formData.get("requestId"),
   });
   if (!contact.success) {
-    return { status: "error", message: "Enter a valid email and a message of up to 3,000 characters." };
+    return { status: "error", message: contact.error.issues[0].message };
   }
 
   const apiKey = process.env.RESEND_API_KEY?.trim();
