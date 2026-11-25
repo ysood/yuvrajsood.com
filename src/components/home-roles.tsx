@@ -89,6 +89,8 @@ export function HomeRoles() {
                   {...triggerProps}
                   className={cn(roleTriggerClass, "active:opacity-65 motion-safe:transition-opacity motion-safe:duration-150")}
                   href={href}
+                  rel="noopener noreferrer"
+                  target="_blank"
                   onPointerDown={(event) => { lastPointerType.current = event.pointerType; }}
                   onClick={(event) => {
                     const pointerType = lastPointerType.current;
