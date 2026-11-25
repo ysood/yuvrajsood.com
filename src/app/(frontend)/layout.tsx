@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Yuvraj Sood",
-    template: "%s · Yuvraj Sood",
+    template: "Yuvraj Sood · %s",
   },
   description: "Products, tools, and objects used and recommended by Yuvraj Sood.",
   icons: {
