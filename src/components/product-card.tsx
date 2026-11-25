@@ -25,7 +25,7 @@ export function ProductCard({ product }: { product: Product }) {
         {image && imageSource ? (
           <ProductImage
             alt={image.alt}
-            className="object-contain p-10 sm:p-12"
+            className="object-contain p-10 sm:p-12 motion-safe:transition-[opacity,scale] motion-safe:duration-[500ms,200ms] motion-safe:group-hover:scale-[1.12]"
             sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 32vw"
             {...imageSource}
           />
