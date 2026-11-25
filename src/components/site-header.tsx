@@ -8,7 +8,7 @@ const navItemClass =
 
 export function SiteHeader({ hideNavigation = false }: { hideNavigation?: boolean }) {
   return (
-    <header className="mx-auto grid h-20 w-full max-w-site grid-cols-[auto_1fr_auto] items-center px-4 sm:h-24 sm:px-7">
+    <header className="grid h-20 w-full grid-cols-[auto_1fr_auto] items-center px-4 sm:h-24 sm:px-7">
       {!hideNavigation && (
         <>
           <Button asChild className="rounded-full text-xs tracking-tight" size="icon" variant="secondary">
