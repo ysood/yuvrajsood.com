@@ -4,6 +4,8 @@ import { ContactComposer } from "@/components/contact-composer";
 import { SiteDock } from "@/components/site-dock";
 import { SiteHeader } from "@/components/site-header";
 
+import styles from "./contact.module.css";
+
 export const metadata: Metadata = {
   title: "Contact",
   description: "Get in touch with Yuvraj Sood.",
@@ -16,12 +18,14 @@ export default function ContactPage() {
         <SiteHeader hideNavigation />
       </div>
       <main className="w-full max-w-site px-4 sm:px-7">
-        <details className="mx-auto w-full max-w-[23rem]">
-          <summary className="mx-auto w-fit cursor-pointer list-none rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring [&::-webkit-details-marker]:hidden">
-            <h1 className="text-center text-sm font-normal">What&apos;s on your mind?</h1>
-          </summary>
-          <ContactComposer />
-        </details>
+        <div className={`mx-auto w-full max-w-[23rem] ${styles.sequence}`}>
+          <h1 className={`text-center text-sm font-normal ${styles.heading}`}>What&apos;s on your mind?</h1>
+          <div className={`grid grid-rows-[1fr] ${styles.reveal}`}>
+            <div className="min-h-0 overflow-hidden">
+              <ContactComposer />
+            </div>
+          </div>
+        </div>
       </main>
       <SiteDock current="/contact" />
     </div>

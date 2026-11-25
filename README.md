@@ -20,6 +20,12 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Contact email
+
+Contact sends plain-text email through Resend. Set `RESEND_API_KEY` to a sending key, `CONTACT_FROM_EMAIL` to an email address on a [verified sending domain](https://resend.com/docs/dashboard/domains/introduction), and `CONTACT_TO_EMAIL` to the inbox that receives enquiries. Set these in `.env.local` for local delivery or in the Vercel project for deployed delivery. Keep the key server-side and mark it as a Secret in Vercel.
+
+The visitor’s email becomes the reply-to address. The form includes a honeypot and a per-instance submission limit. For a limit shared across deployment instances, apply a [Vercel WAF rate-limit rule](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting) to `POST /contact`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
