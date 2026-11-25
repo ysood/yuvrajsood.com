@@ -13,6 +13,7 @@ const initialState: ContactState = { status: "idle" };
 export function ContactComposer() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [hasTyped, setHasTyped] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [state, send, pending] = useActionState(
     (previous: ContactState, formData: FormData | null) =>
@@ -24,6 +25,7 @@ export function ContactComposer() {
   const resetButton = useRef<HTMLButtonElement>(null);
   const focusAfterReset = useRef(false);
   const sent = state.status === "sent";
+  const hasDraft = Boolean(email.trim() && message.trim());
   const error = pending ? null : fieldError ?? (state.status === "error" ? state.message : null);
   const feedback = sent ? "message received. i’ll be in touch with you shortly" : error?.toLowerCase();
 
@@ -59,7 +61,9 @@ export function ContactComposer() {
                   send(formData);
                 }}
                 aria-busy={pending}
+                data-idle={!hasTyped || undefined}
                 inert={sent}
+                onChange={() => setHasTyped(true)}
                 onInvalid={(event) => {
                   event.preventDefault();
                   const firstInvalid = event.currentTarget.querySelector<HTMLInputElement | HTMLTextAreaElement>(
@@ -72,7 +76,7 @@ export function ContactComposer() {
                 }}
               >
                 <label className="group grid grid-cols-[0.75rem_minmax(0,1fr)] items-center gap-2 px-3 py-1.5">
-                  <Mail aria-hidden="true" className="size-3 text-muted-foreground group-focus-within:text-foreground" strokeWidth={1.5} />
+                  <Mail aria-hidden="true" className={`${styles.emailCue} size-3 text-muted-foreground group-focus-within:text-foreground`} strokeWidth={1.5} />
                   <Input
                     aria-label="From email"
                     autoComplete="email"
@@ -108,7 +112,7 @@ export function ContactComposer() {
                         setFieldError(null);
                         setMessage(event.target.value);
                       }}
-                      placeholder="write your message…"
+                      placeholder="write your message"
                       readOnly={pending}
                       required
                       value={message}
@@ -117,7 +121,8 @@ export function ContactComposer() {
                 </label>
                 <div className="flex flex-wrap items-center justify-end gap-x-2 border-t px-3 py-1.5">
                   <button
-                    className="ml-auto inline-flex min-h-6 min-w-6 cursor-pointer items-center gap-1.5 bg-transparent text-[11px]/4 underline-offset-2 enabled:hover:underline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default disabled:opacity-50"
+                    className="ml-auto inline-flex min-h-6 min-w-6 cursor-pointer items-center gap-1.5 bg-transparent text-[11px]/4 underline-offset-2 enabled:hover:underline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default disabled:opacity-50 data-[ready=false]:text-muted-foreground motion-safe:transition-colors"
+                    data-ready={hasDraft}
                     disabled={pending}
                     type="submit"
                   >
