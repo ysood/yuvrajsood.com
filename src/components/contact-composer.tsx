@@ -129,7 +129,7 @@ export function ContactComposer() {
               {sent && (
                 <button
                   aria-label="Write a new message"
-                  className="absolute inset-0 cursor-pointer rounded-[inherit] bg-background/65 focus-visible:outline-1 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+                  className={`${styles.sentOverlay} absolute inset-0 cursor-pointer rounded-[inherit] bg-background/65 focus-visible:outline-1 focus-visible:-outline-offset-2 focus-visible:outline-ring`}
                   onClick={resetComposer}
                   ref={resetButton}
                   type="button"
