@@ -14,7 +14,7 @@
     animation-fill-mode: both;
   }
 
-  button:focus-visible .label {
+  :is(a, button):focus-visible .label {
     opacity: 1 !important;
   }
 
