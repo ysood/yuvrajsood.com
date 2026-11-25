@@ -25,7 +25,7 @@ export function ContactComposer() {
   const focusAfterReset = useRef(false);
   const sent = state.status === "sent";
   const error = pending ? null : fieldError ?? (state.status === "error" ? state.message : null);
-  const feedback = sent ? "message sent. i’ll be in touch with you shortly" : error?.toLowerCase();
+  const feedback = sent ? "message received. i’ll be in touch with you shortly" : error?.toLowerCase();
 
   useEffect(() => {
     if (sent) {
