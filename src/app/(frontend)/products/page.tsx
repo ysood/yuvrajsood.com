@@ -24,7 +24,7 @@ export default async function ProductsPage() {
 
   return (
     <main className="min-h-screen bg-background pb-[calc(5rem+env(safe-area-inset-bottom))] text-foreground">
-      <SiteHeader />
+      <SiteHeader hideNavigation />
 
       <section className="mx-auto flex w-full max-w-site flex-col items-center px-4 pb-20 pt-16 text-center sm:px-7 sm:pb-24 sm:pt-24">
         <p className="mb-5 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground">

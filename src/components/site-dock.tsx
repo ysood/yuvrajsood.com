@@ -15,7 +15,7 @@ export function SiteDock({ current }: { current: "/" | "/products" }) {
       aria-label="Quick navigation"
       className="fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex justify-center px-4 pointer-events-none"
     >
-      <ul className="pointer-events-auto flex gap-1 rounded-full border border-border bg-background/85 p-1.5 shadow-sm backdrop-blur-md">
+      <ul className="pointer-events-auto flex rounded-full border border-border bg-background/85 p-0.5 backdrop-blur-md">
         {destinations.map(({ label, href, Icon }) => (
           <li className={styles.item} key={label}>
             {href ? (
