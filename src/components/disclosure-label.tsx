@@ -53,15 +53,17 @@ export function DisclosureLabel({ label, fadeDelay = 0, hintDelay }: {
       >
         {label}
       </span>
-      {hintDelay !== undefined && (
+      {hintDelay !== undefined && ["start", "end"].map((side) => (
         <span
           aria-hidden="true"
           className={`${styles.hint} pointer-events-none select-none font-mono text-xs text-muted-foreground`}
+          data-side={side}
+          key={side}
           style={{ animationDelay: `${hintDelay}ms` }}
         >
           ++
         </span>
-      )}
+      ))}
     </>
   );
 }

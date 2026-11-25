@@ -1,10 +1,17 @@
 .hint {
   position: absolute;
-  inset-inline-start: 100%;
   top: 50%;
   translate: 0 -50%;
   letter-spacing: 0.16em;
   opacity: 0;
+}
+
+.hint[data-side="start"] {
+  inset-inline-end: 100%;
+}
+
+.hint[data-side="end"] {
+  inset-inline-start: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
