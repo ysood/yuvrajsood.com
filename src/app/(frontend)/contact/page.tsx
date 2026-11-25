@@ -20,8 +20,10 @@ export default function ContactPage() {
       <main className="w-full max-w-site px-4 sm:px-7">
         <div className={`mx-auto w-full max-w-[19rem] ${styles.sequence}`}>
           <h1 className={`text-center text-sm font-normal ${styles.heading}`}>What&apos;s on your mind?</h1>
-          <div className={styles.reveal}>
-            <ContactComposer />
+          <div className={`${styles.reveal} ${styles.emailReveal}`}>
+            <div>
+              <ContactComposer />
+            </div>
           </div>
         </div>
       </main>

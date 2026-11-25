@@ -39,7 +39,7 @@ export function ContactComposer() {
             <Input
               aria-label="From email"
               autoComplete="email"
-              className="h-6 rounded-[3px] border-0 bg-transparent px-0 text-[11px]/4 text-foreground shadow-none focus-visible:ring-1 md:text-[11px]/4 dark:bg-transparent"
+              className="h-6 rounded-[3px] border-0 bg-transparent px-0 text-[11px]/4 text-foreground shadow-none focus-visible:ring-0 md:text-[11px]/4 dark:bg-transparent"
               maxLength={254}
               name="email"
               onChange={(event) => {
@@ -57,38 +57,40 @@ export function ContactComposer() {
             <label>Website<input autoComplete="off" name="contactWebsite" tabIndex={-1} /></label>
           </div>
           {hasValidEmail && (
-            <div className={`border-t ${styles.messageFields}`}>
-              <label className="group grid grid-cols-[0.75rem_minmax(0,1fr)] items-start gap-2 px-3 py-1">
-                <ChevronRight aria-hidden="true" className="mt-3 size-3 text-muted-foreground group-focus-within:text-foreground" strokeWidth={1.5} />
-                <span className={`text-xs ${styles.messageEditor}`} data-message={message}>
-                  <Textarea
-                    aria-label="Message"
-                    className="resize-none overflow-y-auto rounded-[3px] border-0 bg-transparent px-0 text-xs text-foreground shadow-none focus-visible:ring-1 md:text-xs dark:bg-transparent"
-                    maxLength={3000}
-                    name="message"
-                    onChange={(event) => {
-                      requestId.current = null;
-                      setMessage(event.target.value);
-                    }}
-                    placeholder="write your message…"
-                    readOnly={pending}
-                    required
-                    value={message}
-                  />
-                </span>
-              </label>
-              <div className="flex flex-wrap items-center justify-end gap-x-2 border-t px-3 py-1.5">
-                {state.status === "error" && !pending && (
-                  <p className="grow px-1 py-1 text-xs text-muted-foreground" role="alert">{state.message}</p>
-                )}
-                <button
-                  className="ml-auto inline-flex min-h-6 min-w-6 cursor-pointer items-center gap-1.5 bg-transparent text-[11px]/4 underline-offset-2 enabled:hover:underline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default disabled:opacity-50"
-                  disabled={pending}
-                  type="submit"
-                >
-                  {pending ? "sending…" : "send"}
-                  <ArrowUpRight aria-hidden="true" className="size-3 text-muted-foreground" />
-                </button>
+            <div className={styles.reveal}>
+              <div>
+                <label className="group grid grid-cols-[0.75rem_minmax(0,1fr)] items-start gap-2 border-t px-3 py-1">
+                  <ChevronRight aria-hidden="true" className="mt-3 size-3 text-muted-foreground group-focus-within:text-foreground" strokeWidth={1.5} />
+                  <span className={`text-xs ${styles.messageEditor}`} data-message={message}>
+                    <Textarea
+                      aria-label="Message"
+                      className="resize-none overflow-y-auto rounded-[3px] border-0 bg-transparent px-0 text-xs text-foreground shadow-none focus-visible:ring-0 md:text-xs dark:bg-transparent"
+                      maxLength={3000}
+                      name="message"
+                      onChange={(event) => {
+                        requestId.current = null;
+                        setMessage(event.target.value);
+                      }}
+                      placeholder="write your message…"
+                      readOnly={pending}
+                      required
+                      value={message}
+                    />
+                  </span>
+                </label>
+                <div className="flex flex-wrap items-center justify-end gap-x-2 border-t px-3 py-1.5">
+                  {state.status === "error" && !pending && (
+                    <p className="grow px-1 py-1 text-xs text-muted-foreground" role="alert">{state.message}</p>
+                  )}
+                  <button
+                    className="ml-auto inline-flex min-h-6 min-w-6 cursor-pointer items-center gap-1.5 bg-transparent text-[11px]/4 underline-offset-2 enabled:hover:underline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default disabled:opacity-50"
+                    disabled={pending}
+                    type="submit"
+                  >
+                    {pending ? "sending…" : "send"}
+                    <ArrowUpRight aria-hidden="true" className="size-3 text-muted-foreground" />
+                  </button>
+                </div>
               </div>
             </div>
           )}
