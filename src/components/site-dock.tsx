@@ -1,6 +1,7 @@
 import { House, Mail, Package } from "lucide-react";
 import Link from "next/link";
 
+import { SiteDockMotion } from "./site-dock-motion";
 import styles from "./site-dock.module.css";
 
 const destinations = [
@@ -15,7 +16,7 @@ export function SiteDock({ current }: { current: "/" | "/products" }) {
       aria-label="Quick navigation"
       className="fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex justify-center px-4 pointer-events-none"
     >
-      <ul className="pointer-events-auto flex gap-2">
+      <SiteDockMotion>
         {destinations.map(({ label, href, Icon }) => (
           <li className={styles.item} key={label}>
             {href ? (
@@ -37,7 +38,7 @@ export function SiteDock({ current }: { current: "/" | "/products" }) {
             </span>
           </li>
         ))}
-      </ul>
+      </SiteDockMotion>
     </nav>
   );
 }
