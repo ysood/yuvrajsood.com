@@ -21,7 +21,7 @@ export function ContactComposer() {
   return (
     <>
       <div className={`row-start-2 mx-auto w-full max-w-[19rem] ${styles.sequence}`}>
-        <h1 className={`text-center text-sm font-normal ${styles.heading}`}>What&apos;s on your mind?</h1>
+        <h1 className={`text-center text-sm font-normal ${styles.heading}`}>what&apos;s on your mind?</h1>
         <div className={styles.reveal}>
           <div>
             <div className="mt-4 overflow-hidden rounded-[6px] border bg-card font-mono text-card-foreground">
@@ -113,7 +113,7 @@ export function ContactComposer() {
           key={error}
           role="alert"
         >
-          {error}
+          {error.toLowerCase()}
         </p>
       )}
     </>
