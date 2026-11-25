@@ -9,7 +9,7 @@ import { getPayloadClient } from "@/lib/payload";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Products",
+  title: { absolute: "Yuvraj Sood · Products" },
   description: "Of all the things I use every day, these are the ones I’d recommend to a friend.",
 };
 
