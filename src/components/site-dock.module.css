@@ -20,10 +20,6 @@
   outline-offset: 2px;
 }
 
-.action:disabled {
-  pointer-events: none;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .action {
     width: 2.375rem;

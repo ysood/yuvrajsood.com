@@ -27,8 +27,8 @@ export function SiteHeader({ hideNavigation = false }: { hideNavigation?: boolea
             <Button asChild className={navItemClass} size="sm" variant="ghost">
               <Link href="/products">Products</Link>
             </Button>
-            <Button aria-disabled="true" className={navItemClass} size="sm" type="button" variant="ghost">
-              Contact
+            <Button asChild className={navItemClass} size="sm" variant="ghost">
+              <Link href="/contact">Contact</Link>
             </Button>
           </nav>
         </>
