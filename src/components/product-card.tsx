@@ -33,7 +33,7 @@ export function ProductCard({ product }: { product: Product }) {
         {product.staffPick ? (
           <Badge className="absolute left-4 top-4 text-highlight-foreground" variant="ghost">
             <BadgeCheck aria-hidden="true" fill="currentColor" size={15} />
-            <span>Staff pick</span>
+            <span>my pick</span>
           </Badge>
         ) : null}
 

@@ -119,7 +119,7 @@ export const Products: CollectionConfig = {
       name: "staffPick",
       type: "checkbox",
       defaultValue: false,
-      label: "Staff pick",
+      label: "My pick",
     },
   ],
 };

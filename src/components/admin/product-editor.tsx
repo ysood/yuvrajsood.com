@@ -150,7 +150,7 @@ export function ProductEditor({ blobUploadsEnabled, product }: { blobUploadsEnab
 
         <div className="space-y-2"><Label>About / description</Label><RichTextEditor onChange={(value) => setField("description", value as Draft["description"])} value={draft.description as SerializedEditorState} />{fieldError("description") ? <p className="text-sm text-destructive">{fieldError("description")}</p> : null}</div>
 
-        <div className="flex items-center justify-between rounded-xl border p-4"><div><Label htmlFor="staffPick">Staff pick</Label><p className="mt-1 text-sm text-muted-foreground">Highlight this item in the catalogue.</p></div><Switch checked={draft.staffPick} id="staffPick" onCheckedChange={(checked) => setField("staffPick", checked)} /></div>
+        <div className="flex items-center justify-between rounded-xl border p-4"><div><Label htmlFor="staffPick">My pick</Label><p className="mt-1 text-sm text-muted-foreground">Highlight this item in the catalogue.</p></div><Switch checked={draft.staffPick} id="staffPick" onCheckedChange={(checked) => setField("staffPick", checked)} /></div>
 
         <details className="rounded-xl border p-4"><summary className="cursor-pointer text-sm font-medium">Advanced</summary><div className="mt-4 space-y-2"><Label htmlFor="slug">Slug</Label><Input id="slug" maxLength={160} onChange={(event) => { setSlugEdited(true); setField("slug", slugify(event.target.value)); }} required value={draft.slug} />{fieldError("slug") ? <p className="text-sm text-destructive">{fieldError("slug")}</p> : null}</div></details>
 

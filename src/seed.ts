@@ -75,7 +75,7 @@ const products = [
     staffPick: true,
     description: richText(
       "An ergonomic work chair designed around support, adjustability, and long sessions at a desk.",
-      "This seeded record exists to exercise longer names, larger prices, and the staff-pick treatment before final products are entered.",
+      "This seeded record exists to exercise longer names, larger prices, and the pick badge before final products are entered.",
     ),
   },
 ] satisfies Array<Omit<Product, "createdAt" | "id" | "image" | "updatedAt">>;
