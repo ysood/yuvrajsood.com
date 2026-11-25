@@ -60,11 +60,15 @@ export function SiteDockMotion({ children }: { children: ReactNode }) {
       }
 
       let shift = -extraWidth / 2;
-      for (const [index, { icon, amount }] of items.entries()) {
+      for (const [index, { item, icon, amount }] of items.entries()) {
         if (index > 0) shift += GAP_EXPANSION * (items[index - 1].amount + amount);
-        if (!icon) continue;
-        if (settled && !amount && !shift) icon.style.removeProperty("transform");
-        else icon.style.transform = `translate3d(${shift}px, ${-8 * amount}px, 0) scale(${1 + 0.48 * amount})`;
+        if (settled && !amount && !shift) {
+          item.style.removeProperty("--dock-shift");
+          icon?.style.removeProperty("transform");
+        } else {
+          item.style.setProperty("--dock-shift", `${shift}px`);
+          if (icon) icon.style.transform = `translate3d(var(--dock-shift), ${-8 * amount}px, 0) scale(${1 + 0.48 * amount})`;
+        }
       }
 
       frame = settled ? 0 : requestAnimationFrame(animate);
@@ -109,6 +113,7 @@ export function SiteDockMotion({ children }: { children: ReactNode }) {
       radius = 0;
       for (const item of items) {
         item.amount = item.target = item.velocity = 0;
+        item.item.style.removeProperty("--dock-shift");
         item.icon?.style.removeProperty("transform");
       }
     }

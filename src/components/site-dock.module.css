@@ -39,7 +39,7 @@
   position: absolute;
   bottom: calc(100% + 0.85rem);
   left: 50%;
-  translate: -50% 0;
+  translate: calc(-50% + var(--dock-shift, 0px)) 0;
   color: var(--muted-foreground);
   font-size: 0.75rem;
   white-space: nowrap;
