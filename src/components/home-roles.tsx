@@ -5,21 +5,21 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const roles = [
-  { id: "son", label: "Son", description: "love you mom and dad" },
+  { id: "son", label: "son", description: "love you mom and dad" },
   {
     id: "creative-director",
-    label: "Creative Director",
+    label: "creative director",
     description: "visual media for international artists targeted at audiences north of 100 million people.",
   },
   {
     id: "founder",
-    label: "Founder",
-    description: "multidisciplinary creative and software studio. helping SMBs integrate AI into their operations.",
+    label: "founder",
+    description: "multidisciplinary creative and software studio. helping smbs integrate ai into their operations.",
   },
   {
     id: "student",
-    label: "Student",
-    description: "Software Engineering Honours student at the University of Sydney. Major in Engineering Data Science. Minor in Innovation & Entrepreneurship.",
+    label: "student",
+    description: "software engineering honours student at the university of sydney. major in engineering data science. minor in innovation & entrepreneurship.",
   },
 ];
 
