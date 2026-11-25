@@ -11,17 +11,17 @@ const roles = [
   {
     id: "creative-director",
     label: "creative director",
-    description: "visual media for international artists targeted at audiences north of 100 million people.",
+    description: "visual media for international artists targeted at audiences north of 100 million souls.",
   },
   {
     id: "founder",
     label: "founder",
-    description: "multidisciplinary creative and software studio. helping smbs integrate ai into their operations.",
+    description: "multidisciplinary creative and software studio. empowering smbs by integrating ai into their operations.",
   },
   {
     id: "student",
     label: "student",
-    description: "software engineering honours student at the university of sydney. major in engineering data science. minor in innovation & entrepreneurship.",
+    description: "software engineering honours at the university of sydney. major in engineering data science. minor in innovation & entrepreneurship.",
   },
 ];
 
