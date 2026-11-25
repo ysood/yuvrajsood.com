@@ -3,16 +3,17 @@
   inset-inline-start: 100%;
   top: 50%;
   translate: 0 -50%;
+  white-space: nowrap;
   opacity: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .hint {
-    animation: role-hint 6.4s ease-in-out infinite;
+    animation: role-hint 8s ease-in-out infinite;
   }
 }
 
-/* Each role has a 1.6s slot in the four-role loop. */
+/* Each role has a 2s slot in the four-role loop. */
 @keyframes role-hint {
   0%, 22%, 100% { opacity: 0; }
   8%, 14% { opacity: 1; }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -25,11 +25,47 @@ const roles = [
   },
 ];
 
+const roleHintKey = "home-role-hint-dismissed";
+
+function subscribeToSessionStorage(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+}
+
+function readRoleHintDismissal() {
+  try {
+    return sessionStorage.getItem(roleHintKey) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function getServerRoleHintDismissal() {
+  return false;
+}
+
 export function HomeRoles() {
   const [hoveredRole, setHoveredRole] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [hasExpandedRole, setHasExpandedRole] = useState(false);
+  const sessionDismissedHint = useSyncExternalStore(
+    subscribeToSessionStorage,
+    readRoleHintDismissal,
+    getServerRoleHintDismissal,
+  );
+  const showHint = !hasExpandedRole && !sessionDismissedHint;
   const activeRole = hoveredRole ?? selectedRole;
+
+  function dismissHint() {
+    if (!showHint) return;
+
+    setHasExpandedRole(true);
+    try {
+      sessionStorage.setItem(roleHintKey, "1");
+    } catch {
+      // The local state also dismisses the hint when storage is unavailable.
+    }
+  }
 
   // Center the collapsed stack so expanding a row keeps its label under the pointer.
   return (
@@ -45,26 +81,26 @@ export function HomeRoles() {
               aria-expanded={isVisible}
               className="relative mx-auto block min-h-6 cursor-pointer rounded-sm px-2 focus-visible:outline-2 focus-visible:outline-ring"
               onClick={() => {
-                setHasExpandedRole(true);
+                dismissHint();
                 setHoveredRole(null);
                 setSelectedRole((current) => (current === id ? null : id));
               }}
               onPointerEnter={(event) => {
                 if (event.pointerType === "mouse") {
-                  setHasExpandedRole(true);
+                  dismissHint();
                   setHoveredRole(id);
                 }
               }}
               type="button"
             >
               {label}
-              {!hasExpandedRole && (
+              {showHint && (
                 <span
                   aria-hidden="true"
                   className={`${styles.hint} pointer-events-none select-none font-mono text-xs text-muted-foreground`}
-                  style={{ animationDelay: `${0.5 + index * 1.6}s` }}
+                  style={{ animationDelay: `${0.5 + index * 2}s` }}
                 >
-                  ++
+                  + +
                 </span>
               )}
             </button>
